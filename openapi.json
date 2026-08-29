@@ -1,0 +1,41 @@
+﻿{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Ligeia Studio M2M Micro-Commerce Capability Hub",
+    "version": "2.0.0",
+    "description": "Deterministic validation, mathematical calculation, and workflow intelligence for autonomous AI coding agents under the x402 payment protocol."
+  },
+  "servers": [
+    { "url": "https://cell001-media-geometry.ligeiastudio-aitools.workers.dev" }
+  ],
+  "paths": {
+    "/v1/media-geometry": {
+      "post": {
+        "summary": "Cell 001: Media Geometry Engine",
+        "description": "Computes exact 2D aspect ratio, crop coordinate offsets, and padding requirements.",
+        "responses": { "200": { "description": "Deterministic geometry calculation" }, "402": { "description": "x402 Payment Required ($0.001 USDC)" } }
+      }
+    },
+    "/v1/geometry/measurement": {
+      "post": {
+        "summary": "Cell 002: Geometric Measurement Engine",
+        "description": "Computes Pythagorean diagonals, slope pitch angles, areas, and 1/16th-inch fractional formatting.",
+        "responses": { "200": { "description": "Exact geometric measurement" }, "402": { "description": "x402 Payment Required ($0.001 USDC)" } }
+      }
+    },
+    "/v1/data/json-clean": {
+      "post": {
+        "summary": "Cell 003: Data Hygiene Engine",
+        "description": "Recursively sorts keys alphabetically, strips whitespace, and returns canonical JSON with SHA-256 verification.",
+        "responses": { "200": { "description": "Canonical sorted JSON payload" }, "402": { "description": "x402 Payment Required ($0.001 USDC)" } }
+      }
+    },
+    "/v1/workflow/comfy-preflight": {
+      "post": {
+        "summary": "Cell 004: ComfyUI Workflow Preflight Engine",
+        "description": "Statically audits ComfyUI node graphs for dangling links and missing required inputs before expensive cloud GPU execution.",
+        "responses": { "200": { "description": "Structured graph diagnostic report" }, "402": { "description": "x402 Payment Required ($0.001 USDC)" } }
+      }
+    }
+  }
+}

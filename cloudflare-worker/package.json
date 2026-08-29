@@ -1,0 +1,16 @@
+{
+  "name": "cell001-x402-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "hono": "latest",
+    "x402-hono": "latest"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}

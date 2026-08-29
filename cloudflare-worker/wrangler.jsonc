@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cell001-media-geometry",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-25",
+  "vars": {
+    "NETWORK": "base-sepolia",
+    "CHAIN_ID": "84532",
+    "PAY_TO": "0xf6D6D35764138b0179Fd6838fa43b02ae12E46Dc",
+    "USDC": "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
+  }
+}
