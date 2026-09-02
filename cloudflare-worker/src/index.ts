@@ -1,5 +1,10 @@
-import { Hono } from "hono";
+﻿import { Hono } from "hono";
 import { paymentMiddleware } from "x402-hono";
+
+import { resolveNetworkConfig, type ValidatedNetworkConfig } from "./networkConfig";
+
+export { resolveNetworkConfig };
+export type { ValidatedNetworkConfig };
 
 interface Env {
   NETWORK?: string;
@@ -10,32 +15,6 @@ interface Env {
 
 const app = new Hono<{ Bindings: Env }>();
 
-const NETWORK_CONFIG = {
-  base: {
-    network: "base",
-    chain_id: 8453,
-    pay_to: "0xd38fe438F96C9E21AcdA8d3E9ecE8C4156157dc0",
-    usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-  },
-  "base-sepolia": {
-    network: "base-sepolia",
-    chain_id: 84532,
-    pay_to: "0xf6D6D35764138b0179Fd6838fa43b02ae12E46Dc",
-    usdc: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-  },
-} as const;
-
-type NetworkName = keyof typeof NETWORK_CONFIG;
-type NetworkConfig = (typeof NETWORK_CONFIG)[NetworkName];
-
-function resolveNetworkConfig(env: Env): NetworkConfig {
-  const network = env.NETWORK as NetworkName;
-  const config = NETWORK_CONFIG[network];
-  if (!config || Number(env.CHAIN_ID) !== config.chain_id || env.PAY_TO !== config.pay_to || env.USDC !== config.usdc) {
-    throw new Error("Invalid network configuration: NETWORK, PAY_TO, and USDC must be one supported tuple");
-  }
-  return config;
-}
 const VERSION = "1.0.0";
 const MAX_BODY_BYTES = 512 * 1024;
 const MAX_JSON_DEPTH = 32;
@@ -323,9 +302,9 @@ app.get("/", (c) => {
   return c.json({
     name: "Ligeia Studio M2M Micro-Commerce Hub",
     network: config.network,
-    chain_id: config.chain_id,
+    chain_id: Number(config.chainId),
     settlement_token: `USDC (${config.usdc})`,
-    pay_to: config.pay_to,
+    pay_to: config.payTo,
     version: VERSION,
     cells: {
     "Cell 001": { route: "/v1/media-geometry", price: "$0.003", description: "2D Aspect Ratio & Exact Crop Offsets" },
@@ -341,8 +320,8 @@ app.get("/.well-known/x402.json", (c) => {
   return c.json({
     version: VERSION,
     network: config.network,
-    chain_id: config.chain_id,
-    pay_to: config.pay_to,
+    chain_id: Number(config.chainId),
+    pay_to: config.payTo,
     asset: config.usdc,
     services: [
       { cell: "001", name: "Media Geometry", route: "/v1/media-geometry", price_atomic: 3000, price_usdc: 0.003 },
@@ -372,28 +351,31 @@ app.use(
   "*",
   (c, next) => {
     const config = resolveNetworkConfig(c.env);
+    const payTo = config.payTo as `0x${string}`;
+    const network = config.network as "base" | "base-sepolia";
+    const usdc = config.usdc as `0x${string}`;
     return paymentMiddleware(
-      config.pay_to,
+      payTo,
       {
         "/v1/media-geometry": {
           price: "$0.003",
-          network: config.network,
-          config: { description: "Cell 001 Media Geometry", mimeType: "application/json" },
+          network: network,
+          config: { description: "Cell 001 Media Geometry", mimeType: "application/json", asset: usdc },
         },
         "/v1/geometry/measurement": {
           price: "$0.003",
-          network: config.network,
-          config: { description: "Cell 002 Geometric Measurement", mimeType: "application/json" },
+          network: network,
+          config: { description: "Cell 002 Geometric Measurement", mimeType: "application/json", asset: usdc },
         },
         "/v1/data/json-clean": {
           price: "$0.003",
-          network: config.network,
-          config: { description: "Cell 003 Data Hygiene", mimeType: "application/json" },
+          network: network,
+          config: { description: "Cell 003 Data Hygiene", mimeType: "application/json", asset: usdc },
         },
         "/v1/workflow/comfy-preflight": {
           price: "$0.020",
-          network: config.network,
-          config: { description: "Cell 004 ComfyUI Preflight", mimeType: "application/json" },
+          network: network,
+          config: { description: "Cell 004 ComfyUI Preflight", mimeType: "application/json", asset: usdc },
         },
       },
       { url: "https://x402.org/facilitator" },
