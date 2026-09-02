@@ -10,8 +10,9 @@
     "PAY_TO": "0xd38fe438F96C9E21AcdA8d3E9ecE8C4156157dc0",
     "USDC": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     "CDP_API_KEY_ID": "b3b50fee-26b5-4dd0-836d-4f390260b740",
-    "CDP_API_KEY_SECRET": ""
+    "CDP_API_KEY_ID": "b3b50fee-26b5-4dd0-836d-4f390260b740"
   },
+  }
   "env": {
     "testnet": {
       "vars": {
@@ -20,8 +21,8 @@
         "BASE_RPC_URL": "https://sepolia.base.org",
         "PAY_TO": "0xf6D6D35764138b0179Fd6838fa43b02ae12E46Dc",
         "USDC": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-        "CDP_API_KEY_ID": "b3b50fee-26b5-4dd0-836d-4f390260b740",
-        "CDP_API_KEY_SECRET": ""
+        "CDP_API_KEY_ID": "b3b50fee-26b5-4dd0-836d-4f390260b740"
+      }
       }
     }
   }

@@ -24,7 +24,7 @@ Cloudflare's current x402 documentation supports `base-sepolia` for testing, `x4
 1. A **testnet-only EVM wallet** whose private key can be stored locally for this experiment.
 2. Test USDC on **Base Sepolia** from the Circle faucet.
 3. A Cloudflare account for Worker deployment.
-4. `npm install` in `cloudflare-worker` and `npx wrangler deploy`.
+4. `npm install` in ` on the sidebar` and `npx wrangler deploy`.
 
 **Never use a real-money wallet/private key for this test.**
 

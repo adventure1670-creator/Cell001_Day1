@@ -67,7 +67,7 @@ var init_errors = __esm({
       constructor(shortMessage, args = {}) {
         const details = args.cause instanceof _BaseError ? args.cause.details : args.cause?.message ? args.cause.message : args.details;
         const docsPath9 = args.cause instanceof _BaseError ? args.cause.docsPath || args.docsPath : args.docsPath;
-        const message = [
+        const message2 = [
           shortMessage || "An error occurred.",
           "",
           ...args.metaMessages ? [...args.metaMessages, ""] : [],
@@ -75,7 +75,7 @@ var init_errors = __esm({
           ...details ? [`Details: ${details}`] : [],
           `Version: abitype@${version}`
         ].join("\n");
-        super(message);
+        super(message2);
         Object.defineProperty(this, "details", {
           enumerable: true,
           configurable: true,
@@ -1037,7 +1037,7 @@ var init_base = __esm({
           return args.docsPath;
         })();
         const docsUrl = errorConfig.getDocsUrl?.({ ...args, docsPath: docsPath9 });
-        const message = [
+        const message2 = [
           shortMessage || "An error occurred.",
           "",
           ...args.metaMessages ? [...args.metaMessages, ""] : [],
@@ -1045,7 +1045,7 @@ var init_base = __esm({
           ...details ? [`Details: ${details}`] : [],
           ...errorConfig.version ? [`Version: ${errorConfig.version}`] : []
         ].join("\n");
-        super(message, args.cause ? { cause: args.cause } : void 0);
+        super(message2, args.cause ? { cause: args.cause } : void 0);
         Object.defineProperty(this, "details", {
           enumerable: true,
           configurable: true,
@@ -2224,8 +2224,8 @@ var init_keccak256 = __esm({
 });
 
 // node_modules/viem/_esm/utils/hash/hashSignature.js
-function hashSignature(sig) {
-  return hash(sig);
+function hashSignature(sig2) {
+  return hash(sig2);
 }
 var hash;
 var init_hashSignature = __esm({
@@ -4123,7 +4123,7 @@ ${prettyStateOverride(stateOverride)}`;
       static {
         __name(this, "ContractFunctionRevertedError");
       }
-      constructor({ abi: abi2, data, functionName, message, cause: error }) {
+      constructor({ abi: abi2, data, functionName, message: message2, cause: error }) {
         let cause;
         let decodedData;
         let metaMessages;
@@ -4153,8 +4153,8 @@ ${prettyStateOverride(stateOverride)}`;
           } catch (err) {
             cause = err;
           }
-        } else if (message)
-          reason = message;
+        } else if (message2)
+          reason = message2;
         let signature;
         if (cause instanceof AbiErrorSignatureNotFoundError) {
           signature = cause.signature;
@@ -4238,8 +4238,8 @@ ${prettyStateOverride(stateOverride)}`;
       static {
         __name(this, "RawContractError");
       }
-      constructor({ data, message }) {
-        super(message || "", { name: "RawContractError" });
+      constructor({ data, message: message2 }) {
+        super(message2 || "", { name: "RawContractError" });
         Object.defineProperty(this, "code", {
           enumerable: true,
           configurable: true,
@@ -5282,7 +5282,7 @@ var init_hmac = __esm({
         this.iHash.destroy();
       }
     };
-    hmac = /* @__PURE__ */ __name((hash3, key, message) => new HMAC(hash3, key).update(message).digest(), "hmac");
+    hmac = /* @__PURE__ */ __name((hash3, key, message2) => new HMAC(hash3, key).update(message2).digest(), "hmac");
     hmac.create = (hash3, key) => new HMAC(hash3, key);
   }
 });
@@ -5711,15 +5711,15 @@ function nLength(n, nBitLength) {
 function Field(ORDER, bitLen2, isLE2 = false, redef = {}) {
   if (ORDER <= _0n3)
     throw new Error("invalid field: expected ORDER > 0, got " + ORDER);
-  const { nBitLength: BITS, nByteLength: BYTES } = nLength(ORDER, bitLen2);
-  if (BYTES > 2048)
+  const { nBitLength: BITS, nByteLength: BYTES2 } = nLength(ORDER, bitLen2);
+  if (BYTES2 > 2048)
     throw new Error("invalid field: expected ORDER of <= 2048 bytes");
   let sqrtP;
   const f = Object.freeze({
     ORDER,
     isLE: isLE2,
     BITS,
-    BYTES,
+    BYTES: BYTES2,
     MASK: bitMask(BITS),
     ZERO: _0n3,
     ONE: _1n3,
@@ -5750,10 +5750,10 @@ function Field(ORDER, bitLen2, isLE2 = false, redef = {}) {
         sqrtP = FpSqrt(ORDER);
       return sqrtP(f, n);
     }),
-    toBytes: /* @__PURE__ */ __name((num2) => isLE2 ? numberToBytesLE(num2, BYTES) : numberToBytesBE(num2, BYTES), "toBytes"),
+    toBytes: /* @__PURE__ */ __name((num2) => isLE2 ? numberToBytesLE(num2, BYTES2) : numberToBytesBE(num2, BYTES2), "toBytes"),
     fromBytes: /* @__PURE__ */ __name((bytes) => {
-      if (bytes.length !== BYTES)
-        throw new Error("Field.fromBytes: expected " + BYTES + " bytes, got " + bytes.length);
+      if (bytes.length !== BYTES2)
+        throw new Error("Field.fromBytes: expected " + BYTES2 + " bytes, got " + bytes.length);
       return isLE2 ? bytesToNumberLE(bytes) : bytesToNumberBE(bytes);
     }, "fromBytes"),
     // TODO: we don't need it here, move out to separate fn
@@ -6812,13 +6812,13 @@ function weierstrass(curveDef) {
   __name(prepSig, "prepSig");
   const defaultSigOpts = { lowS: CURVE.lowS, prehash: false };
   const defaultVerOpts = { lowS: CURVE.lowS, prehash: false };
-  function sign2(msgHash, privKey, opts = defaultSigOpts) {
+  function sign3(msgHash, privKey, opts = defaultSigOpts) {
     const { seed, k2sig } = prepSig(msgHash, privKey, opts);
     const C = CURVE;
     const drbg = createHmacDrbg(C.hash.outputLen, C.nByteLength, C.hmac);
     return drbg(seed, k2sig);
   }
-  __name(sign2, "sign");
+  __name(sign3, "sign");
   Point2.BASE._setWindowSize(8);
   function verify4(signature, msgHash, publicKey, opts = defaultVerOpts) {
     const sg = signature;
@@ -6876,7 +6876,7 @@ function weierstrass(curveDef) {
     CURVE,
     getPublicKey,
     getSharedSecret,
-    sign: sign2,
+    sign: sign3,
     verify: verify4,
     ProjectivePoint: Point2,
     Signature,
@@ -7004,9 +7004,9 @@ var init_weierstrass = __esm({
       Err: DERErr,
       // Basic building block is TLV (Tag-Length-Value)
       _tlv: {
-        encode: /* @__PURE__ */ __name((tag, data) => {
+        encode: /* @__PURE__ */ __name((tag2, data) => {
           const { Err: E } = DER;
-          if (tag < 0 || tag > 256)
+          if (tag2 < 0 || tag2 > 256)
             throw new E("tlv.encode: wrong tag");
           if (data.length & 1)
             throw new E("tlv.encode: unpadded data");
@@ -7015,16 +7015,16 @@ var init_weierstrass = __esm({
           if (len.length / 2 & 128)
             throw new E("tlv.encode: long form length too big");
           const lenLen = dataLen > 127 ? numberToHexUnpadded(len.length / 2 | 128) : "";
-          const t = numberToHexUnpadded(tag);
+          const t = numberToHexUnpadded(tag2);
           return t + lenLen + len + data;
         }, "encode"),
         // v - value, l - left bytes (unparsed)
-        decode(tag, data) {
+        decode(tag2, data) {
           const { Err: E } = DER;
           let pos = 0;
-          if (tag < 0 || tag > 256)
+          if (tag2 < 0 || tag2 > 256)
             throw new E("tlv.encode: wrong tag");
-          if (data.length < 2 || data[pos++] !== tag)
+          if (data.length < 2 || data[pos++] !== tag2)
             throw new E("tlv.decode: wrong tlv");
           const first = data[pos++];
           const isLong = !!(first & 128);
@@ -7091,10 +7091,10 @@ var init_weierstrass = __esm({
           throw new E("invalid signature: left bytes after parsing");
         return { r: int.decode(rBytes), s: int.decode(sBytes) };
       },
-      hexFromSig(sig) {
+      hexFromSig(sig2) {
         const { _tlv: tlv, _int: int } = DER;
-        const rs = tlv.encode(2, int.encode(sig.r));
-        const ss = tlv.encode(2, int.encode(sig.s));
+        const rs = tlv.encode(2, int.encode(sig2.r));
+        const ss = tlv.encode(2, int.encode(sig2.s));
         const seq = rs + ss;
         return tlv.encode(48, seq);
       }
@@ -7331,12 +7331,12 @@ function sqrtMod(y) {
     throw new Error("Cannot find square root");
   return root;
 }
-function taggedHash(tag, ...messages) {
-  let tagP = TAGGED_HASH_PREFIXES[tag];
+function taggedHash(tag2, ...messages) {
+  let tagP = TAGGED_HASH_PREFIXES[tag2];
   if (tagP === void 0) {
-    const tagH = sha2562(Uint8Array.from(tag, (c) => c.charCodeAt(0)));
+    const tagH = sha2562(Uint8Array.from(tag2, (c) => c.charCodeAt(0)));
     tagP = concatBytes3(tagH, tagH);
-    TAGGED_HASH_PREFIXES[tag] = tagP;
+    TAGGED_HASH_PREFIXES[tag2] = tagP;
   }
   return sha2562(concatBytes3(tagP, ...messages));
 }
@@ -7363,8 +7363,8 @@ function challenge(...args) {
 function schnorrGetPublicKey(privateKey) {
   return schnorrGetExtPubKey(privateKey).bytes;
 }
-function schnorrSign(message, privateKey, auxRand = randomBytes(32)) {
-  const m = ensureBytes("message", message);
+function schnorrSign(message2, privateKey, auxRand = randomBytes(32)) {
+  const m = ensureBytes("message", message2);
   const { bytes: px, scalar: d } = schnorrGetExtPubKey(privateKey);
   const a = ensureBytes("auxRand", auxRand, 32);
   const t = numTo32b(d ^ num(taggedHash("BIP0340/aux", a)));
@@ -7374,23 +7374,23 @@ function schnorrSign(message, privateKey, auxRand = randomBytes(32)) {
     throw new Error("sign failed: k is zero");
   const { bytes: rx, scalar: k } = schnorrGetExtPubKey(k_);
   const e7 = challenge(rx, px, m);
-  const sig = new Uint8Array(64);
-  sig.set(rx, 0);
-  sig.set(numTo32b(modN(k + e7 * d)), 32);
-  if (!schnorrVerify(sig, m, px))
+  const sig2 = new Uint8Array(64);
+  sig2.set(rx, 0);
+  sig2.set(numTo32b(modN(k + e7 * d)), 32);
+  if (!schnorrVerify(sig2, m, px))
     throw new Error("sign: Invalid signature produced");
-  return sig;
+  return sig2;
 }
-function schnorrVerify(signature, message, publicKey) {
-  const sig = ensureBytes("signature", signature, 64);
-  const m = ensureBytes("message", message);
+function schnorrVerify(signature, message2, publicKey) {
+  const sig2 = ensureBytes("signature", signature, 64);
+  const m = ensureBytes("message", message2);
   const pub = ensureBytes("publicKey", publicKey, 32);
   try {
     const P2 = lift_x(num(pub));
-    const r = num(sig.subarray(0, 32));
+    const r = num(sig2.subarray(0, 32));
     if (!inRange(r, _1n6, secp256k1P))
       return false;
-    const s3 = num(sig.subarray(32, 64));
+    const s3 = num(sig2.subarray(32, 64));
     if (!inRange(s3, _1n6, secp256k1N))
       return false;
     const e7 = challenge(numTo32b(r), pointToBytes(P2), m);
@@ -7549,8 +7549,8 @@ var init_node = __esm({
       static {
         __name(this, "ExecutionRevertedError");
       }
-      constructor({ cause, message } = {}) {
-        const reason = message?.replace("execution reverted: ", "")?.replace("execution reverted", "");
+      constructor({ cause, message: message2 } = {}) {
+        const reason = message2?.replace("execution reverted: ", "")?.replace("execution reverted", "");
         super(`Execution reverted ${reason ? `with reason: ${reason}` : "for an unknown reason"}.`, {
           cause,
           name: "ExecutionRevertedError"
@@ -7763,43 +7763,43 @@ var init_node = __esm({
 
 // node_modules/viem/_esm/utils/errors/getNodeError.js
 function getNodeError(err, args) {
-  const message = (err.details || "").toLowerCase();
+  const message2 = (err.details || "").toLowerCase();
   const executionRevertedError = err instanceof BaseError2 ? err.walk((e7) => e7?.code === ExecutionRevertedError.code) : err;
   if (executionRevertedError instanceof BaseError2)
     return new ExecutionRevertedError({
       cause: err,
       message: executionRevertedError.details
     });
-  if (ExecutionRevertedError.nodeMessage.test(message))
+  if (ExecutionRevertedError.nodeMessage.test(message2))
     return new ExecutionRevertedError({
       cause: err,
       message: err.details
     });
-  if (FeeCapTooHighError.nodeMessage.test(message))
+  if (FeeCapTooHighError.nodeMessage.test(message2))
     return new FeeCapTooHighError({
       cause: err,
       maxFeePerGas: args?.maxFeePerGas
     });
-  if (FeeCapTooLowError.nodeMessage.test(message))
+  if (FeeCapTooLowError.nodeMessage.test(message2))
     return new FeeCapTooLowError({
       cause: err,
       maxFeePerGas: args?.maxFeePerGas
     });
-  if (NonceTooHighError.nodeMessage.test(message))
+  if (NonceTooHighError.nodeMessage.test(message2))
     return new NonceTooHighError({ cause: err, nonce: args?.nonce });
-  if (NonceTooLowError.nodeMessage.test(message))
+  if (NonceTooLowError.nodeMessage.test(message2))
     return new NonceTooLowError({ cause: err, nonce: args?.nonce });
-  if (NonceMaxValueError.nodeMessage.test(message))
+  if (NonceMaxValueError.nodeMessage.test(message2))
     return new NonceMaxValueError({ cause: err, nonce: args?.nonce });
-  if (InsufficientFundsError.nodeMessage.test(message))
+  if (InsufficientFundsError.nodeMessage.test(message2))
     return new InsufficientFundsError({ cause: err });
-  if (IntrinsicGasTooHighError.nodeMessage.test(message))
+  if (IntrinsicGasTooHighError.nodeMessage.test(message2))
     return new IntrinsicGasTooHighError({ cause: err, gas: args?.gas });
-  if (IntrinsicGasTooLowError.nodeMessage.test(message))
+  if (IntrinsicGasTooLowError.nodeMessage.test(message2))
     return new IntrinsicGasTooLowError({ cause: err, gas: args?.gas });
-  if (TransactionTypeNotSupportedError.nodeMessage.test(message))
+  if (TransactionTypeNotSupportedError.nodeMessage.test(message2))
     return new TransactionTypeNotSupportedError({ cause: err });
-  if (TipAboveFeeCapError.nodeMessage.test(message))
+  if (TipAboveFeeCapError.nodeMessage.test(message2))
     return new TipAboveFeeCapError({
       cause: err,
       maxFeePerGas: args?.maxFeePerGas,
@@ -8261,7 +8261,7 @@ var init_Errors = __esm({
         const docs = `${docsBaseUrl}${docsPath9 ?? ""}`;
         const showVersion = Boolean(options.version ?? _BaseError.prototype.showVersion);
         const version5 = options.version ?? _BaseError.prototype.version;
-        const message = [
+        const message2 = [
           shortMessage || "An error occurred.",
           ...options.metaMessages ? ["", ...options.metaMessages] : [],
           ...details || docsPath9 || showVersion ? [
@@ -8271,7 +8271,7 @@ var init_Errors = __esm({
             showVersion ? `Version: ${version5}` : void 0
           ] : []
         ].filter((x) => typeof x === "string").join("\n");
-        super(message, options.cause ? { cause: options.cause } : void 0);
+        super(message2, options.cause ? { cause: options.cause } : void 0);
         Object.defineProperty(this, "details", {
           enumerable: true,
           configurable: true,
@@ -10366,8 +10366,8 @@ async function scheduleMulticall(client, args) {
       });
     }, "fn")
   });
-  const [{ returnData, success }] = await schedule({ data, to });
-  if (!success)
+  const [{ returnData, success: success2 }] = await schedule({ data, to });
+  if (!success2)
     throw new RawContractError({ data: returnData });
   if (returnData === "0x")
     return { data: void 0 };
@@ -10663,13 +10663,13 @@ var getPattern = /* @__PURE__ */ __name((label, next) => {
   }
   return null;
 }, "getPattern");
-var tryDecode = /* @__PURE__ */ __name((str, decoder2) => {
+var tryDecode = /* @__PURE__ */ __name((str, decoder3) => {
   try {
-    return decoder2(str);
+    return decoder3(str);
   } catch {
     return str.replace(/(?:%[0-9A-Fa-f]{2})+/g, (match2) => {
       try {
-        return decoder2(match2);
+        return decoder3(match2);
       } catch {
         return match2;
       }
@@ -12683,16 +12683,16 @@ init_rpc();
 var EXECUTION_REVERTED_ERROR_CODE = 3;
 function getContractError(err, { abi: abi2, address: address2, args, docsPath: docsPath9, functionName, sender }) {
   const error = err instanceof RawContractError ? err : err instanceof BaseError2 ? err.walk((err2) => "data" in err2) || err.walk() : {};
-  const { code, data, details, message, shortMessage } = error;
+  const { code, data, details, message: message2, shortMessage } = error;
   const cause = (() => {
     if (err instanceof AbiDecodingZeroDataError)
       return new ContractFunctionZeroDataError({ functionName, cause: err });
-    if ([EXECUTION_REVERTED_ERROR_CODE, InternalRpcError.code].includes(code) && (data || details || message || shortMessage) || code === InvalidInputRpcError.code && details === "execution reverted" && data) {
+    if ([EXECUTION_REVERTED_ERROR_CODE, InternalRpcError.code].includes(code) && (data || details || message2 || shortMessage) || code === InvalidInputRpcError.code && details === "execution reverted" && data) {
       return new ContractFunctionRevertedError({
         abi: abi2,
         data: typeof data === "object" ? data.data : data,
         functionName,
-        message: error instanceof RpcRequestError ? details : shortMessage ?? message,
+        message: error instanceof RpcRequestError ? details : shortMessage ?? message2,
         cause: err
       });
     }
@@ -12814,8 +12814,8 @@ function getEncodableList(list2) {
         else
           cursor.pushUint32(bodyLength);
       }
-      for (const { encode: encode4 } of list2) {
-        encode4(cursor);
+      for (const { encode: encode6 } of list2) {
+        encode6(cursor);
       }
     }
   };
@@ -14472,10 +14472,10 @@ init_stringify();
 var promiseCache = /* @__PURE__ */ new Map();
 var responseCache = /* @__PURE__ */ new Map();
 function getCache(cacheKey2) {
-  const buildCache = /* @__PURE__ */ __name((cacheKey3, cache2) => ({
-    clear: /* @__PURE__ */ __name(() => cache2.delete(cacheKey3), "clear"),
-    get: /* @__PURE__ */ __name(() => cache2.get(cacheKey3), "get"),
-    set: /* @__PURE__ */ __name((data) => cache2.set(cacheKey3, data), "set")
+  const buildCache = /* @__PURE__ */ __name((cacheKey3, cache3) => ({
+    clear: /* @__PURE__ */ __name(() => cache3.delete(cacheKey3), "clear"),
+    get: /* @__PURE__ */ __name(() => cache3.get(cacheKey3), "get"),
+    set: /* @__PURE__ */ __name((data) => cache3.set(cacheKey3, data), "set")
   }), "buildCache");
   const promise = buildCache(cacheKey2, promiseCache);
   const response = buildCache(cacheKey2, responseCache);
@@ -14490,24 +14490,24 @@ function getCache(cacheKey2) {
 }
 __name(getCache, "getCache");
 async function withCache(fn, { cacheKey: cacheKey2, cacheTime = Number.POSITIVE_INFINITY }) {
-  const cache2 = getCache(cacheKey2);
-  const response = cache2.response.get();
+  const cache3 = getCache(cacheKey2);
+  const response = cache3.response.get();
   if (response && cacheTime > 0) {
     const age = Date.now() - response.created.getTime();
     if (age < cacheTime)
       return response.data;
   }
-  let promise = cache2.promise.get();
+  let promise = cache3.promise.get();
   if (!promise) {
     promise = fn();
-    cache2.promise.set(promise);
+    cache3.promise.set(promise);
   }
   try {
     const data = await promise;
-    cache2.response.set({ created: /* @__PURE__ */ new Date(), data });
+    cache3.response.set({ created: /* @__PURE__ */ new Date(), data });
     return data;
   } finally {
-    cache2.promise.clear();
+    cache3.promise.clear();
   }
 }
 __name(withCache, "withCache");
@@ -15175,16 +15175,16 @@ async function sendCalls(client, parameters) {
       if (capabilities) {
         const hasNonOptionalCapability = Object.values(capabilities).some((capability) => !capability.optional);
         if (hasNonOptionalCapability) {
-          const message = "non-optional `capabilities` are not supported on fallback to `eth_sendTransaction`.";
-          throw new UnsupportedNonOptionalCapabilityError(new BaseError2(message, {
-            details: message
+          const message2 = "non-optional `capabilities` are not supported on fallback to `eth_sendTransaction`.";
+          throw new UnsupportedNonOptionalCapabilityError(new BaseError2(message2, {
+            details: message2
           }));
         }
       }
       if (forceAtomic && calls.length > 1) {
-        const message = "`forceAtomic` is not supported on fallback to `eth_sendTransaction`.";
-        throw new AtomicityNotSupportedError(new BaseError2(message, {
-          details: message
+        const message2 = "`forceAtomic` is not supported on fallback to `eth_sendTransaction`.";
+        throw new AtomicityNotSupportedError(new BaseError2(message2, {
+          details: message2
         }));
       }
       const results = [];
@@ -17209,7 +17209,7 @@ async function readResponseBody(response, { maxResponseBodySize }) {
     return body2;
   }
   const reader = response.body.getReader();
-  const decoder2 = new TextDecoder();
+  const decoder3 = new TextDecoder();
   let body = "";
   let size5 = 0;
   try {
@@ -17225,9 +17225,9 @@ async function readResponseBody(response, { maxResponseBodySize }) {
           size: size5
         });
       }
-      body += decoder2.decode(value, { stream: true });
+      body += decoder3.decode(value, { stream: true });
     }
-    body += decoder2.decode();
+    body += decoder3.decode();
     return body;
   } finally {
     reader.releaseLock();
@@ -17267,21 +17267,21 @@ init_concat();
 init_size();
 init_toHex();
 function toPrefixedMessage(message_) {
-  const message = (() => {
+  const message2 = (() => {
     if (typeof message_ === "string")
       return stringToHex(message_);
     if (typeof message_.raw === "string")
       return message_.raw;
     return bytesToHex(message_.raw);
   })();
-  const prefix = stringToHex(`${presignMessagePrefix}${size(message)}`);
-  return concat([prefix, message]);
+  const prefix = stringToHex(`${presignMessagePrefix}${size(message2)}`);
+  return concat([prefix, message2]);
 }
 __name(toPrefixedMessage, "toPrefixedMessage");
 
 // node_modules/viem/_esm/utils/signature/hashMessage.js
-function hashMessage(message, to_) {
-  return keccak256(toPrefixedMessage(message), to_);
+function hashMessage(message2, to_) {
+  return keccak256(toPrefixedMessage(message2), to_);
 }
 __name(hashMessage, "hashMessage");
 
@@ -17367,16 +17367,16 @@ function serializeTypedData(parameters) {
       return {};
     return normalizeData(types.EIP712Domain, domain_);
   })();
-  const message = (() => {
+  const message2 = (() => {
     if (primaryType === "EIP712Domain")
       return void 0;
     return normalizeData(types[primaryType], message_);
   })();
-  return stringify({ domain, message, primaryType, types });
+  return stringify({ domain, message: message2, primaryType, types });
 }
 __name(serializeTypedData, "serializeTypedData");
 function validateTypedData(parameters) {
-  const { domain, message, primaryType, types } = parameters;
+  const { domain, message: message2, primaryType, types } = parameters;
   const validateData = /* @__PURE__ */ __name((struct, data) => {
     for (const param of struct) {
       const { name, type } = param;
@@ -17417,7 +17417,7 @@ function validateTypedData(parameters) {
   }
   if (primaryType !== "EIP712Domain") {
     if (types[primaryType])
-      validateData(types[primaryType], message);
+      validateData(types[primaryType], message2);
     else
       throw new InvalidPrimaryTypeError({ primaryType, types });
   }
@@ -17447,14 +17447,14 @@ __name(validateReference, "validateReference");
 
 // node_modules/viem/_esm/utils/signature/hashTypedData.js
 function hashTypedData(parameters) {
-  const { domain = {}, message, primaryType } = parameters;
+  const { domain = {}, message: message2, primaryType } = parameters;
   const types = {
     EIP712Domain: getTypesForEIP712Domain({ domain }),
     ...parameters.types
   };
   validateTypedData({
     domain,
-    message,
+    message: message2,
     primaryType,
     types
   });
@@ -17466,7 +17466,7 @@ function hashTypedData(parameters) {
     }));
   if (primaryType !== "EIP712Domain")
     parts.push(hashStruct({
-      data: message,
+      data: message2,
       primaryType,
       types
     }));
@@ -17598,7 +17598,7 @@ var BaseError4 = class _BaseError extends Error {
   constructor(shortMessage, args = {}) {
     const details = args.cause instanceof _BaseError ? args.cause.details : args.cause?.message ? args.cause.message : args.details;
     const docsPath9 = args.cause instanceof _BaseError ? args.cause.docsPath || args.docsPath : args.docsPath;
-    const message = [
+    const message2 = [
       shortMessage || "An error occurred.",
       "",
       ...args.metaMessages ? [...args.metaMessages, ""] : [],
@@ -17606,7 +17606,7 @@ var BaseError4 = class _BaseError extends Error {
       ...details ? [`Details: ${details}`] : [],
       `Version: abitype@${version4}`
     ].join("\n");
-    super(message);
+    super(message2);
     Object.defineProperty(this, "details", {
       enumerable: true,
       configurable: true,
@@ -19593,7 +19593,7 @@ function encodePacked(types, values) {
 }
 __name(encodePacked, "encodePacked");
 (function(encodePacked2) {
-  function encode4(type, value, isArray = false) {
+  function encode6(type, value, isArray = false) {
     if (type === "address") {
       const address2 = value;
       assert4(address2);
@@ -19629,7 +19629,7 @@ __name(encodePacked, "encodePacked");
       const [_type, childType] = arrayMatch;
       const data = [];
       for (let i = 0; i < value.length; i++) {
-        data.push(encode4(childType, value[i], true));
+        data.push(encode6(childType, value[i], true));
       }
       if (data.length === 0)
         return "0x";
@@ -19637,8 +19637,8 @@ __name(encodePacked, "encodePacked");
     }
     throw new InvalidTypeError(type);
   }
-  __name(encode4, "encode");
-  encodePacked2.encode = encode4;
+  __name(encode6, "encode");
+  encodePacked2.encode = encode6;
 })(encodePacked || (encodePacked = {}));
 function from6(parameters) {
   if (Array.isArray(parameters) && typeof parameters[0] === "string")
@@ -19808,8 +19808,8 @@ function getEncodableList2(list2) {
         else
           cursor.pushUint32(bodyLength);
       }
-      for (const { encode: encode4 } of list2) {
-        encode4(cursor);
+      for (const { encode: encode6 } of list2) {
+        encode6(cursor);
       }
     }
   };
@@ -20503,13 +20503,13 @@ async function multicall(client, parameters) {
     }
     const aggregate3Result = result.value;
     for (let j = 0; j < aggregate3Result.length; j++) {
-      const { returnData, success } = aggregate3Result[j];
+      const { returnData, success: success2 } = aggregate3Result[j];
       const { callData } = batches[i][j];
       const { abi: abi2, address: address2, functionName, args } = contracts2[results.length];
       try {
         if (callData === "0x")
           throw new AbiDecodingZeroDataError();
-        if (!success)
+        if (!success2)
           throw new RawContractError({ data: returnData });
         const result2 = decodeFunctionResult({
           abi: abi2,
@@ -21629,8 +21629,8 @@ var VerificationError = class extends Error {
 };
 
 // node_modules/viem/_esm/actions/public/verifyMessage.js
-async function verifyMessage(client, { address: address2, message, factory, factoryData, signature, ...callRequest }) {
-  const hash3 = hashMessage(message);
+async function verifyMessage(client, { address: address2, message: message2, factory, factoryData, signature, ...callRequest }) {
+  const hash3 = hashMessage(message2);
   return getAction(client, verifyHash, "verifyHash")({
     address: address2,
     factory,
@@ -21644,8 +21644,8 @@ __name(verifyMessage, "verifyMessage");
 
 // node_modules/viem/_esm/actions/public/verifyTypedData.js
 async function verifyTypedData(client, parameters) {
-  const { address: address2, factory, factoryData, signature, message, primaryType, types, domain, ...callRequest } = parameters;
-  const hash3 = hashTypedData({ message, primaryType, types, domain });
+  const { address: address2, factory, factoryData, signature, message: message2, primaryType, types, domain, ...callRequest } = parameters;
+  const hash3 = hashTypedData({ message: message2, primaryType, types, domain });
   return getAction(client, verifyHash, "verifyHash")({
     address: address2,
     factory,
@@ -22326,10 +22326,10 @@ function parseSiweDateTime(value) {
   return new Date(value);
 }
 __name(parseSiweDateTime, "parseSiweDateTime");
-function parseSiweMessage(message) {
-  const { scheme, statement, ...prefix } = message.match(prefixRegex)?.groups ?? {};
-  const { chainId, expirationTime, issuedAt, notBefore, requestId, ...suffix } = message.match(suffixRegex)?.groups ?? {};
-  const resources = message.split("Resources:")[1]?.split("\n- ").slice(1);
+function parseSiweMessage(message2) {
+  const { scheme, statement, ...prefix } = message2.match(prefixRegex)?.groups ?? {};
+  const { chainId, expirationTime, issuedAt, notBefore, requestId, ...suffix } = message2.match(suffixRegex)?.groups ?? {};
+  const resources = message2.split("Resources:")[1]?.split("\n- ").slice(1);
   return {
     ...prefix,
     ...suffix,
@@ -22351,33 +22351,33 @@ var suffixRegex = /(?:URI: (?<uri>.+))\n(?:Version: (?<version>.+))\n(?:Chain ID
 init_isAddress();
 init_isAddressEqual();
 function validateSiweMessage(parameters) {
-  const { address: address2, domain, message, nonce, scheme, time = /* @__PURE__ */ new Date() } = parameters;
-  if (domain && message.domain !== domain)
+  const { address: address2, domain, message: message2, nonce, scheme, time = /* @__PURE__ */ new Date() } = parameters;
+  if (domain && message2.domain !== domain)
     return false;
-  if (nonce && message.nonce !== nonce)
+  if (nonce && message2.nonce !== nonce)
     return false;
-  if (scheme && message.scheme !== scheme)
+  if (scheme && message2.scheme !== scheme)
     return false;
   if (Number.isNaN(time.getTime()))
     return false;
-  if (message.expirationTime) {
-    if (Number.isNaN(message.expirationTime.getTime()))
+  if (message2.expirationTime) {
+    if (Number.isNaN(message2.expirationTime.getTime()))
       return false;
-    if (time >= message.expirationTime)
+    if (time >= message2.expirationTime)
       return false;
   }
-  if (message.notBefore) {
-    if (Number.isNaN(message.notBefore.getTime()))
+  if (message2.notBefore) {
+    if (Number.isNaN(message2.notBefore.getTime()))
       return false;
-    if (time < message.notBefore)
+    if (time < message2.notBefore)
       return false;
   }
   try {
-    if (!message.address)
+    if (!message2.address)
       return false;
-    if (!isAddress(message.address, { strict: false }))
+    if (!isAddress(message2.address, { strict: false }))
       return false;
-    if (address2 && !isAddressEqual(message.address, address2))
+    if (address2 && !isAddressEqual(message2.address, address2))
       return false;
   } catch {
     return false;
@@ -22388,8 +22388,8 @@ __name(validateSiweMessage, "validateSiweMessage");
 
 // node_modules/viem/_esm/actions/siwe/verifySiweMessage.js
 async function verifySiweMessage(client, parameters) {
-  const { address: address2, domain, message, nonce, scheme, signature, time = /* @__PURE__ */ new Date(), ...callRequest } = parameters;
-  const parsed = parseSiweMessage(message);
+  const { address: address2, domain, message: message2, nonce, scheme, signature, time = /* @__PURE__ */ new Date(), ...callRequest } = parameters;
+  const parsed = parseSiweMessage(message2);
   if (!parsed.address)
     return false;
   const isValid2 = validateSiweMessage({
@@ -22402,7 +22402,7 @@ async function verifySiweMessage(client, parameters) {
   });
   if (!isValid2)
     return false;
-  const hash3 = hashMessage(message);
+  const hash3 = hashMessage(message2);
   return verifyHash(client, {
     address: parsed.address,
     hash: hash3,
@@ -23313,20 +23313,20 @@ __name(signAuthorization, "signAuthorization");
 // node_modules/viem/_esm/actions/wallet/signMessage.js
 init_parseAccount();
 init_toHex();
-async function signMessage(client, { account: account_ = client.account, message }) {
+async function signMessage(client, { account: account_ = client.account, message: message2 }) {
   if (!account_)
     throw new AccountNotFoundError({
       docsPath: "/docs/actions/wallet/signMessage"
     });
   const account = parseAccount(account_);
   if (account.signMessage)
-    return account.signMessage({ message });
+    return account.signMessage({ message: message2 });
   const message_ = (() => {
-    if (typeof message === "string")
-      return stringToHex(message);
-    if (message.raw instanceof Uint8Array)
-      return toHex(message.raw);
-    return message.raw;
+    if (typeof message2 === "string")
+      return stringToHex(message2);
+    if (message2.raw instanceof Uint8Array)
+      return toHex(message2.raw);
+    return message2.raw;
   })();
   return client.request({
     method: "personal_sign",
@@ -23384,7 +23384,7 @@ __name(signTransaction, "signTransaction");
 // node_modules/viem/_esm/actions/wallet/signTypedData.js
 init_parseAccount();
 async function signTypedData(client, parameters) {
-  const { account: account_ = client.account, domain, message, primaryType } = parameters;
+  const { account: account_ = client.account, domain, message: message2, primaryType } = parameters;
   if (!account_)
     throw new AccountNotFoundError({
       docsPath: "/docs/actions/wallet/signTypedData"
@@ -23394,10 +23394,10 @@ async function signTypedData(client, parameters) {
     EIP712Domain: getTypesForEIP712Domain({ domain }),
     ...parameters.types
   };
-  validateTypedData({ domain, message, primaryType, types });
+  validateTypedData({ domain, message: message2, primaryType, types });
   if (account.signTypedData)
-    return account.signTypedData({ domain, message, primaryType, types });
-  const typedData = serializeTypedData({ domain, message, primaryType, types });
+    return account.signTypedData({ domain, message: message2, primaryType, types });
+  const typedData = serializeTypedData({ domain, message: message2, primaryType, types });
   return client.request({
     method: "eth_signTypedData_v4",
     params: [account.address, typedData]
@@ -24873,104 +24873,104 @@ ZodError.create = (issues) => {
 
 // node_modules/zod/v3/locales/en.js
 var errorMap = /* @__PURE__ */ __name((issue, _ctx) => {
-  let message;
+  let message2;
   switch (issue.code) {
     case ZodIssueCode.invalid_type:
       if (issue.received === ZodParsedType.undefined) {
-        message = "Required";
+        message2 = "Required";
       } else {
-        message = `Expected ${issue.expected}, received ${issue.received}`;
+        message2 = `Expected ${issue.expected}, received ${issue.received}`;
       }
       break;
     case ZodIssueCode.invalid_literal:
-      message = `Invalid literal value, expected ${JSON.stringify(issue.expected, util.jsonStringifyReplacer)}`;
+      message2 = `Invalid literal value, expected ${JSON.stringify(issue.expected, util.jsonStringifyReplacer)}`;
       break;
     case ZodIssueCode.unrecognized_keys:
-      message = `Unrecognized key(s) in object: ${util.joinValues(issue.keys, ", ")}`;
+      message2 = `Unrecognized key(s) in object: ${util.joinValues(issue.keys, ", ")}`;
       break;
     case ZodIssueCode.invalid_union:
-      message = `Invalid input`;
+      message2 = `Invalid input`;
       break;
     case ZodIssueCode.invalid_union_discriminator:
-      message = `Invalid discriminator value. Expected ${util.joinValues(issue.options)}`;
+      message2 = `Invalid discriminator value. Expected ${util.joinValues(issue.options)}`;
       break;
     case ZodIssueCode.invalid_enum_value:
-      message = `Invalid enum value. Expected ${util.joinValues(issue.options)}, received '${issue.received}'`;
+      message2 = `Invalid enum value. Expected ${util.joinValues(issue.options)}, received '${issue.received}'`;
       break;
     case ZodIssueCode.invalid_arguments:
-      message = `Invalid function arguments`;
+      message2 = `Invalid function arguments`;
       break;
     case ZodIssueCode.invalid_return_type:
-      message = `Invalid function return type`;
+      message2 = `Invalid function return type`;
       break;
     case ZodIssueCode.invalid_date:
-      message = `Invalid date`;
+      message2 = `Invalid date`;
       break;
     case ZodIssueCode.invalid_string:
       if (typeof issue.validation === "object") {
         if ("includes" in issue.validation) {
-          message = `Invalid input: must include "${issue.validation.includes}"`;
+          message2 = `Invalid input: must include "${issue.validation.includes}"`;
           if (typeof issue.validation.position === "number") {
-            message = `${message} at one or more positions greater than or equal to ${issue.validation.position}`;
+            message2 = `${message2} at one or more positions greater than or equal to ${issue.validation.position}`;
           }
         } else if ("startsWith" in issue.validation) {
-          message = `Invalid input: must start with "${issue.validation.startsWith}"`;
+          message2 = `Invalid input: must start with "${issue.validation.startsWith}"`;
         } else if ("endsWith" in issue.validation) {
-          message = `Invalid input: must end with "${issue.validation.endsWith}"`;
+          message2 = `Invalid input: must end with "${issue.validation.endsWith}"`;
         } else {
           util.assertNever(issue.validation);
         }
       } else if (issue.validation !== "regex") {
-        message = `Invalid ${issue.validation}`;
+        message2 = `Invalid ${issue.validation}`;
       } else {
-        message = "Invalid";
+        message2 = "Invalid";
       }
       break;
     case ZodIssueCode.too_small:
       if (issue.type === "array")
-        message = `Array must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
+        message2 = `Array must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
       else if (issue.type === "string")
-        message = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
+        message2 = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
       else if (issue.type === "number")
-        message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
+        message2 = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
       else if (issue.type === "bigint")
-        message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
+        message2 = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
       else if (issue.type === "date")
-        message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(Number(issue.minimum))}`;
+        message2 = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(Number(issue.minimum))}`;
       else
-        message = "Invalid input";
+        message2 = "Invalid input";
       break;
     case ZodIssueCode.too_big:
       if (issue.type === "array")
-        message = `Array must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
+        message2 = `Array must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
       else if (issue.type === "string")
-        message = `String must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
+        message2 = `String must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
       else if (issue.type === "number")
-        message = `Number must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
+        message2 = `Number must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
       else if (issue.type === "bigint")
-        message = `BigInt must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
+        message2 = `BigInt must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
       else if (issue.type === "date")
-        message = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(Number(issue.maximum))}`;
+        message2 = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(Number(issue.maximum))}`;
       else
-        message = "Invalid input";
+        message2 = "Invalid input";
       break;
     case ZodIssueCode.custom:
-      message = `Invalid input`;
+      message2 = `Invalid input`;
       break;
     case ZodIssueCode.invalid_intersection_types:
-      message = `Intersection results could not be merged`;
+      message2 = `Intersection results could not be merged`;
       break;
     case ZodIssueCode.not_multiple_of:
-      message = `Number must be a multiple of ${issue.multipleOf}`;
+      message2 = `Number must be a multiple of ${issue.multipleOf}`;
       break;
     case ZodIssueCode.not_finite:
-      message = "Number must be finite";
+      message2 = "Number must be finite";
       break;
     default:
-      message = _ctx.defaultError;
+      message2 = _ctx.defaultError;
       util.assertNever(issue);
   }
-  return { message };
+  return { message: message2 };
 }, "errorMap");
 var en_default = errorMap;
 
@@ -25102,8 +25102,8 @@ var isAsync = /* @__PURE__ */ __name((x) => typeof Promise !== "undefined" && x 
 // node_modules/zod/v3/helpers/errorUtil.js
 var errorUtil;
 (function(errorUtil2) {
-  errorUtil2.errToObj = (message) => typeof message === "string" ? { message } : message || {};
-  errorUtil2.toString = (message) => typeof message === "string" ? message : message?.message;
+  errorUtil2.errToObj = (message2) => typeof message2 === "string" ? { message: message2 } : message2 || {};
+  errorUtil2.toString = (message2) => typeof message2 === "string" ? message2 : message2?.message;
 })(errorUtil || (errorUtil = {}));
 
 // node_modules/zod/v3/types.js
@@ -25158,16 +25158,16 @@ function processCreateParams(params) {
   if (errorMap2)
     return { errorMap: errorMap2, description };
   const customMap = /* @__PURE__ */ __name((iss, ctx) => {
-    const { message } = params;
+    const { message: message2 } = params;
     if (iss.code === "invalid_enum_value") {
-      return { message: message ?? ctx.defaultError };
+      return { message: message2 ?? ctx.defaultError };
     }
     if (typeof ctx.data === "undefined") {
-      return { message: message ?? required_error ?? ctx.defaultError };
+      return { message: message2 ?? required_error ?? ctx.defaultError };
     }
     if (iss.code !== "invalid_type")
       return { message: ctx.defaultError };
-    return { message: message ?? invalid_type_error ?? ctx.defaultError };
+    return { message: message2 ?? invalid_type_error ?? ctx.defaultError };
   }, "customMap");
   return { errorMap: customMap, description };
 }
@@ -25297,14 +25297,14 @@ var ZodType = class {
     const result = await (isAsync(maybeAsyncResult) ? maybeAsyncResult : Promise.resolve(maybeAsyncResult));
     return handleResult(ctx, result);
   }
-  refine(check, message) {
+  refine(check, message2) {
     const getIssueProperties = /* @__PURE__ */ __name((val) => {
-      if (typeof message === "string" || typeof message === "undefined") {
-        return { message };
-      } else if (typeof message === "function") {
-        return message(val);
+      if (typeof message2 === "string" || typeof message2 === "undefined") {
+        return { message: message2 };
+      } else if (typeof message2 === "function") {
+        return message2(val);
       } else {
-        return message;
+        return message2;
       }
     }, "getIssueProperties");
     return this._refinement((val, ctx) => {
@@ -25849,11 +25849,11 @@ var ZodString = class _ZodString extends ZodType {
     }
     return { status: status.value, value: input.data };
   }
-  _regex(regex, validation, message) {
+  _regex(regex, validation, message2) {
     return this.refinement((data) => regex.test(data), {
       validation,
       code: ZodIssueCode.invalid_string,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
   _addCheck(check) {
@@ -25862,37 +25862,37 @@ var ZodString = class _ZodString extends ZodType {
       checks: [...this._def.checks, check]
     });
   }
-  email(message) {
-    return this._addCheck({ kind: "email", ...errorUtil.errToObj(message) });
+  email(message2) {
+    return this._addCheck({ kind: "email", ...errorUtil.errToObj(message2) });
   }
-  url(message) {
-    return this._addCheck({ kind: "url", ...errorUtil.errToObj(message) });
+  url(message2) {
+    return this._addCheck({ kind: "url", ...errorUtil.errToObj(message2) });
   }
-  emoji(message) {
-    return this._addCheck({ kind: "emoji", ...errorUtil.errToObj(message) });
+  emoji(message2) {
+    return this._addCheck({ kind: "emoji", ...errorUtil.errToObj(message2) });
   }
-  uuid(message) {
-    return this._addCheck({ kind: "uuid", ...errorUtil.errToObj(message) });
+  uuid(message2) {
+    return this._addCheck({ kind: "uuid", ...errorUtil.errToObj(message2) });
   }
-  nanoid(message) {
-    return this._addCheck({ kind: "nanoid", ...errorUtil.errToObj(message) });
+  nanoid(message2) {
+    return this._addCheck({ kind: "nanoid", ...errorUtil.errToObj(message2) });
   }
-  cuid(message) {
-    return this._addCheck({ kind: "cuid", ...errorUtil.errToObj(message) });
+  cuid(message2) {
+    return this._addCheck({ kind: "cuid", ...errorUtil.errToObj(message2) });
   }
-  cuid2(message) {
-    return this._addCheck({ kind: "cuid2", ...errorUtil.errToObj(message) });
+  cuid2(message2) {
+    return this._addCheck({ kind: "cuid2", ...errorUtil.errToObj(message2) });
   }
-  ulid(message) {
-    return this._addCheck({ kind: "ulid", ...errorUtil.errToObj(message) });
+  ulid(message2) {
+    return this._addCheck({ kind: "ulid", ...errorUtil.errToObj(message2) });
   }
-  base64(message) {
-    return this._addCheck({ kind: "base64", ...errorUtil.errToObj(message) });
+  base64(message2) {
+    return this._addCheck({ kind: "base64", ...errorUtil.errToObj(message2) });
   }
-  base64url(message) {
+  base64url(message2) {
     return this._addCheck({
       kind: "base64url",
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
   jwt(options) {
@@ -25922,8 +25922,8 @@ var ZodString = class _ZodString extends ZodType {
       ...errorUtil.errToObj(options?.message)
     });
   }
-  date(message) {
-    return this._addCheck({ kind: "date", message });
+  date(message2) {
+    return this._addCheck({ kind: "date", message: message2 });
   }
   time(options) {
     if (typeof options === "string") {
@@ -25939,14 +25939,14 @@ var ZodString = class _ZodString extends ZodType {
       ...errorUtil.errToObj(options?.message)
     });
   }
-  duration(message) {
-    return this._addCheck({ kind: "duration", ...errorUtil.errToObj(message) });
+  duration(message2) {
+    return this._addCheck({ kind: "duration", ...errorUtil.errToObj(message2) });
   }
-  regex(regex, message) {
+  regex(regex, message2) {
     return this._addCheck({
       kind: "regex",
       regex,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
   includes(value, options) {
@@ -25957,46 +25957,46 @@ var ZodString = class _ZodString extends ZodType {
       ...errorUtil.errToObj(options?.message)
     });
   }
-  startsWith(value, message) {
+  startsWith(value, message2) {
     return this._addCheck({
       kind: "startsWith",
       value,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
-  endsWith(value, message) {
+  endsWith(value, message2) {
     return this._addCheck({
       kind: "endsWith",
       value,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
-  min(minLength, message) {
+  min(minLength, message2) {
     return this._addCheck({
       kind: "min",
       value: minLength,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
-  max(maxLength, message) {
+  max(maxLength, message2) {
     return this._addCheck({
       kind: "max",
       value: maxLength,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
-  length(len, message) {
+  length(len, message2) {
     return this._addCheck({
       kind: "length",
       value: len,
-      ...errorUtil.errToObj(message)
+      ...errorUtil.errToObj(message2)
     });
   }
   /**
    * Equivalent to `.min(1)`
    */
-  nonempty(message) {
-    return this.min(1, errorUtil.errToObj(message));
+  nonempty(message2) {
+    return this.min(1, errorUtil.errToObj(message2));
   }
   trim() {
     return new _ZodString({
@@ -26193,19 +26193,19 @@ var ZodNumber = class _ZodNumber extends ZodType {
     }
     return { status: status.value, value: input.data };
   }
-  gte(value, message) {
-    return this.setLimit("min", value, true, errorUtil.toString(message));
+  gte(value, message2) {
+    return this.setLimit("min", value, true, errorUtil.toString(message2));
   }
-  gt(value, message) {
-    return this.setLimit("min", value, false, errorUtil.toString(message));
+  gt(value, message2) {
+    return this.setLimit("min", value, false, errorUtil.toString(message2));
   }
-  lte(value, message) {
-    return this.setLimit("max", value, true, errorUtil.toString(message));
+  lte(value, message2) {
+    return this.setLimit("max", value, true, errorUtil.toString(message2));
   }
-  lt(value, message) {
-    return this.setLimit("max", value, false, errorUtil.toString(message));
+  lt(value, message2) {
+    return this.setLimit("max", value, false, errorUtil.toString(message2));
   }
-  setLimit(kind, value, inclusive, message) {
+  setLimit(kind, value, inclusive, message2) {
     return new _ZodNumber({
       ...this._def,
       checks: [
@@ -26214,7 +26214,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
           kind,
           value,
           inclusive,
-          message: errorUtil.toString(message)
+          message: errorUtil.toString(message2)
         }
       ]
     });
@@ -26225,68 +26225,68 @@ var ZodNumber = class _ZodNumber extends ZodType {
       checks: [...this._def.checks, check]
     });
   }
-  int(message) {
+  int(message2) {
     return this._addCheck({
       kind: "int",
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  positive(message) {
+  positive(message2) {
     return this._addCheck({
       kind: "min",
       value: 0,
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  negative(message) {
+  negative(message2) {
     return this._addCheck({
       kind: "max",
       value: 0,
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  nonpositive(message) {
+  nonpositive(message2) {
     return this._addCheck({
       kind: "max",
       value: 0,
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  nonnegative(message) {
+  nonnegative(message2) {
     return this._addCheck({
       kind: "min",
       value: 0,
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  multipleOf(value, message) {
+  multipleOf(value, message2) {
     return this._addCheck({
       kind: "multipleOf",
       value,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  finite(message) {
+  finite(message2) {
     return this._addCheck({
       kind: "finite",
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  safe(message) {
+  safe(message2) {
     return this._addCheck({
       kind: "min",
       inclusive: true,
       value: Number.MIN_SAFE_INTEGER,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     })._addCheck({
       kind: "max",
       inclusive: true,
       value: Number.MAX_SAFE_INTEGER,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
   get minValue() {
@@ -26412,19 +26412,19 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     });
     return INVALID;
   }
-  gte(value, message) {
-    return this.setLimit("min", value, true, errorUtil.toString(message));
+  gte(value, message2) {
+    return this.setLimit("min", value, true, errorUtil.toString(message2));
   }
-  gt(value, message) {
-    return this.setLimit("min", value, false, errorUtil.toString(message));
+  gt(value, message2) {
+    return this.setLimit("min", value, false, errorUtil.toString(message2));
   }
-  lte(value, message) {
-    return this.setLimit("max", value, true, errorUtil.toString(message));
+  lte(value, message2) {
+    return this.setLimit("max", value, true, errorUtil.toString(message2));
   }
-  lt(value, message) {
-    return this.setLimit("max", value, false, errorUtil.toString(message));
+  lt(value, message2) {
+    return this.setLimit("max", value, false, errorUtil.toString(message2));
   }
-  setLimit(kind, value, inclusive, message) {
+  setLimit(kind, value, inclusive, message2) {
     return new _ZodBigInt({
       ...this._def,
       checks: [
@@ -26433,7 +26433,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
           kind,
           value,
           inclusive,
-          message: errorUtil.toString(message)
+          message: errorUtil.toString(message2)
         }
       ]
     });
@@ -26444,43 +26444,43 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
       checks: [...this._def.checks, check]
     });
   }
-  positive(message) {
+  positive(message2) {
     return this._addCheck({
       kind: "min",
       value: BigInt(0),
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  negative(message) {
+  negative(message2) {
     return this._addCheck({
       kind: "max",
       value: BigInt(0),
       inclusive: false,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  nonpositive(message) {
+  nonpositive(message2) {
     return this._addCheck({
       kind: "max",
       value: BigInt(0),
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  nonnegative(message) {
+  nonnegative(message2) {
     return this._addCheck({
       kind: "min",
       value: BigInt(0),
       inclusive: true,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  multipleOf(value, message) {
+  multipleOf(value, message2) {
     return this._addCheck({
       kind: "multipleOf",
       value,
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
   get minValue() {
@@ -26609,18 +26609,18 @@ var ZodDate = class _ZodDate extends ZodType {
       checks: [...this._def.checks, check]
     });
   }
-  min(minDate, message) {
+  min(minDate, message2) {
     return this._addCheck({
       kind: "min",
       value: minDate.getTime(),
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
-  max(maxDate, message) {
+  max(maxDate, message2) {
     return this._addCheck({
       kind: "max",
       value: maxDate.getTime(),
-      message: errorUtil.toString(message)
+      message: errorUtil.toString(message2)
     });
   }
   get minDate() {
@@ -26876,26 +26876,26 @@ var ZodArray = class _ZodArray extends ZodType {
   get element() {
     return this._def.type;
   }
-  min(minLength, message) {
+  min(minLength, message2) {
     return new _ZodArray({
       ...this._def,
-      minLength: { value: minLength, message: errorUtil.toString(message) }
+      minLength: { value: minLength, message: errorUtil.toString(message2) }
     });
   }
-  max(maxLength, message) {
+  max(maxLength, message2) {
     return new _ZodArray({
       ...this._def,
-      maxLength: { value: maxLength, message: errorUtil.toString(message) }
+      maxLength: { value: maxLength, message: errorUtil.toString(message2) }
     });
   }
-  length(len, message) {
+  length(len, message2) {
     return new _ZodArray({
       ...this._def,
-      exactLength: { value: len, message: errorUtil.toString(message) }
+      exactLength: { value: len, message: errorUtil.toString(message2) }
     });
   }
-  nonempty(message) {
-    return this.min(1, message);
+  nonempty(message2) {
+    return this.min(1, message2);
   }
 };
 ZodArray.create = (schema, params) => {
@@ -27042,17 +27042,17 @@ var ZodObject = class _ZodObject extends ZodType {
   get shape() {
     return this._def.shape();
   }
-  strict(message) {
+  strict(message2) {
     errorUtil.errToObj;
     return new _ZodObject({
       ...this._def,
       unknownKeys: "strict",
-      ...message !== void 0 ? {
+      ...message2 !== void 0 ? {
         errorMap: /* @__PURE__ */ __name((issue, ctx) => {
           const defaultError = this._def.errorMap?.(issue, ctx).message ?? ctx.defaultError;
           if (issue.code === "unrecognized_keys")
             return {
-              message: errorUtil.errToObj(message).message ?? defaultError
+              message: errorUtil.errToObj(message2).message ?? defaultError
             };
           return {
             message: defaultError
@@ -27832,23 +27832,23 @@ var ZodSet = class _ZodSet extends ZodType {
       return finalizeSet(elements);
     }
   }
-  min(minSize, message) {
+  min(minSize, message2) {
     return new _ZodSet({
       ...this._def,
-      minSize: { value: minSize, message: errorUtil.toString(message) }
+      minSize: { value: minSize, message: errorUtil.toString(message2) }
     });
   }
-  max(maxSize, message) {
+  max(maxSize, message2) {
     return new _ZodSet({
       ...this._def,
-      maxSize: { value: maxSize, message: errorUtil.toString(message) }
+      maxSize: { value: maxSize, message: errorUtil.toString(message2) }
     });
   }
-  size(size5, message) {
-    return this.min(size5, message).max(size5, message);
+  size(size5, message2) {
+    return this.min(size5, message2).max(size5, message2);
   }
-  nonempty(message) {
-    return this.min(1, message);
+  nonempty(message2) {
+    return this.min(1, message2);
   }
 };
 ZodSet.create = (valueType, params) => {
@@ -28959,7 +28959,7 @@ __name(hashBytecode, "hashBytecode");
 // node_modules/viem/_esm/zksync/utils/getEip712Domain.js
 var getEip712Domain2 = /* @__PURE__ */ __name((transaction) => {
   assertEip712Transaction(transaction);
-  const message = transactionToMessage(transaction);
+  const message2 = transactionToMessage(transaction);
   return {
     domain: {
       name: "zkSync",
@@ -28984,7 +28984,7 @@ var getEip712Domain2 = /* @__PURE__ */ __name((transaction) => {
       ]
     },
     primaryType: "Transaction",
-    message
+    message: message2
   };
 }, "getEip712Domain");
 function transactionToMessage(transaction) {
@@ -29706,9 +29706,9 @@ __name(anumArr, "anumArr");
 function chain(...args) {
   const id = /* @__PURE__ */ __name((a) => a, "id");
   const wrap3 = /* @__PURE__ */ __name((a, b) => (c) => a(b(c)), "wrap");
-  const encode4 = args.map((x) => x.encode).reduceRight(wrap3, id);
-  const decode2 = args.map((x) => x.decode).reduce(wrap3, id);
-  return { encode: encode4, decode: decode2 };
+  const encode6 = args.map((x) => x.encode).reduceRight(wrap3, id);
+  const decode3 = args.map((x) => x.decode).reduce(wrap3, id);
+  return { encode: encode6, decode: decode3 };
 }
 __name(chain, "chain");
 // @__NO_SIDE_EFFECTS__
@@ -29901,8 +29901,8 @@ async function signAuthorization2(parameters) {
 __name(signAuthorization2, "signAuthorization");
 
 // node_modules/viem/_esm/accounts/utils/signMessage.js
-async function signMessage2({ message, privateKey }) {
-  return await sign({ hash: hashMessage(message), privateKey, to: "hex" });
+async function signMessage2({ message: message2, privateKey }) {
+  return await sign({ hash: hashMessage(message2), privateKey, to: "hex" });
 }
 __name(signMessage2, "signMessage");
 
@@ -29951,8 +29951,8 @@ function privateKeyToAccount(privateKey, options = {}) {
     async signAuthorization(authorization) {
       return signAuthorization2({ ...authorization, privateKey });
     },
-    async signMessage({ message }) {
-      return signMessage2({ message, privateKey });
+    async signMessage({ message: message2 }) {
+      return signMessage2({ message: message2, privateKey });
     },
     async signTransaction(transaction, { serializer } = {}) {
       return signTransaction2({ privateKey, transaction, serializer });
@@ -31229,8 +31229,8 @@ var SolanaError = class extends Error {
         }
       });
     }
-    const message = getErrorMessage(code, context);
-    super(message, errorOptions);
+    const message2 = getErrorMessage(code, context);
+    super(message2, errorOptions);
     this.context = Object.freeze(
       context === void 0 ? {
         __code: code
@@ -31425,7 +31425,7 @@ __name(getSolanaErrorFromTransactionError, "getSolanaErrorFromTransactionError")
 function getSolanaErrorFromJsonRpcError(putativeErrorResponse) {
   let out;
   if (isRpcErrorResponse(putativeErrorResponse)) {
-    const { code: rawCode, data, message } = putativeErrorResponse;
+    const { code: rawCode, data, message: message2 } = putativeErrorResponse;
     const code = Number(rawCode);
     if (code === SOLANA_ERROR__JSON_RPC__SERVER_ERROR_SEND_TRANSACTION_PREFLIGHT_FAILURE) {
       const { err, ...preflightErrorContext } = data;
@@ -31451,7 +31451,7 @@ function getSolanaErrorFromJsonRpcError(putativeErrorResponse) {
         case SOLANA_ERROR__JSON_RPC__SERVER_ERROR_SLOT_SKIPPED:
         case SOLANA_ERROR__JSON_RPC__SERVER_ERROR_TRANSACTION_PRECOMPILE_VERIFICATION_FAILURE:
         case SOLANA_ERROR__JSON_RPC__SERVER_ERROR_UNSUPPORTED_TRANSACTION_VERSION:
-          errorContext = { __serverMessage: message };
+          errorContext = { __serverMessage: message2 };
           break;
         default:
           if (typeof data === "object" && !Array.isArray(data)) {
@@ -31461,8 +31461,8 @@ function getSolanaErrorFromJsonRpcError(putativeErrorResponse) {
       out = new SolanaError(code, errorContext);
     }
   } else {
-    const message = typeof putativeErrorResponse === "object" && putativeErrorResponse !== null && "message" in putativeErrorResponse && typeof putativeErrorResponse.message === "string" ? putativeErrorResponse.message : "Malformed JSON-RPC error with no message attribute";
-    out = new SolanaError(SOLANA_ERROR__MALFORMED_JSON_RPC_ERROR, { error: putativeErrorResponse, message });
+    const message2 = typeof putativeErrorResponse === "object" && putativeErrorResponse !== null && "message" in putativeErrorResponse && typeof putativeErrorResponse.message === "string" ? putativeErrorResponse.message : "Malformed JSON-RPC error with no message attribute";
+    out = new SolanaError(SOLANA_ERROR__MALFORMED_JSON_RPC_ERROR, { error: putativeErrorResponse, message: message2 });
   }
   safeCaptureStackTrace(out, getSolanaErrorFromJsonRpcError);
   return out;
@@ -31491,25 +31491,25 @@ function bytesEqual(bytes1, bytes2) {
   return bytes1.length === bytes2.length && bytes1.every((value, index2) => value === bytes2[index2]);
 }
 __name(bytesEqual, "bytesEqual");
-function getEncodedSize(value, encoder5) {
-  return "fixedSize" in encoder5 ? encoder5.fixedSize : encoder5.getSizeFromValue(value);
+function getEncodedSize(value, encoder6) {
+  return "fixedSize" in encoder6 ? encoder6.fixedSize : encoder6.getSizeFromValue(value);
 }
 __name(getEncodedSize, "getEncodedSize");
-function createEncoder(encoder5) {
+function createEncoder(encoder6) {
   return Object.freeze({
-    ...encoder5,
+    ...encoder6,
     encode: /* @__PURE__ */ __name((value) => {
-      const bytes = new Uint8Array(getEncodedSize(value, encoder5));
-      encoder5.write(value, bytes, 0);
+      const bytes = new Uint8Array(getEncodedSize(value, encoder6));
+      encoder6.write(value, bytes, 0);
       return bytes;
     }, "encode")
   });
 }
 __name(createEncoder, "createEncoder");
-function createDecoder(decoder2) {
+function createDecoder(decoder3) {
   return Object.freeze({
-    ...decoder2,
-    decode: /* @__PURE__ */ __name((bytes, offset = 0) => decoder2.read(bytes, offset)[0], "decode")
+    ...decoder3,
+    decode: /* @__PURE__ */ __name((bytes, offset = 0) => decoder3.read(bytes, offset)[0], "decode")
   });
 }
 __name(createDecoder, "createDecoder");
@@ -31527,29 +31527,29 @@ function isVariableSize(codec) {
   return !isFixedSize(codec);
 }
 __name(isVariableSize, "isVariableSize");
-function combineCodec(encoder5, decoder2) {
-  if (isFixedSize(encoder5) !== isFixedSize(decoder2)) {
+function combineCodec(encoder6, decoder3) {
+  if (isFixedSize(encoder6) !== isFixedSize(decoder3)) {
     throw new SolanaError(SOLANA_ERROR__CODECS__ENCODER_DECODER_SIZE_COMPATIBILITY_MISMATCH);
   }
-  if (isFixedSize(encoder5) && isFixedSize(decoder2) && encoder5.fixedSize !== decoder2.fixedSize) {
+  if (isFixedSize(encoder6) && isFixedSize(decoder3) && encoder6.fixedSize !== decoder3.fixedSize) {
     throw new SolanaError(SOLANA_ERROR__CODECS__ENCODER_DECODER_FIXED_SIZE_MISMATCH, {
-      decoderFixedSize: decoder2.fixedSize,
-      encoderFixedSize: encoder5.fixedSize
+      decoderFixedSize: decoder3.fixedSize,
+      encoderFixedSize: encoder6.fixedSize
     });
   }
-  if (!isFixedSize(encoder5) && !isFixedSize(decoder2) && encoder5.maxSize !== decoder2.maxSize) {
+  if (!isFixedSize(encoder6) && !isFixedSize(decoder3) && encoder6.maxSize !== decoder3.maxSize) {
     throw new SolanaError(SOLANA_ERROR__CODECS__ENCODER_DECODER_MAX_SIZE_MISMATCH, {
-      decoderMaxSize: decoder2.maxSize,
-      encoderMaxSize: encoder5.maxSize
+      decoderMaxSize: decoder3.maxSize,
+      encoderMaxSize: encoder6.maxSize
     });
   }
   return {
-    ...decoder2,
-    ...encoder5,
-    decode: decoder2.decode,
-    encode: encoder5.encode,
-    read: decoder2.read,
-    write: encoder5.write
+    ...decoder3,
+    ...encoder6,
+    decode: decoder3.decode,
+    encode: encoder6.encode,
+    read: decoder3.read,
+    write: encoder6.write
   };
 }
 __name(combineCodec, "combineCodec");
@@ -31582,31 +31582,31 @@ function assertByteArrayOffsetIsNotOutOfRange(codecDescription, offset, bytesLen
   }
 }
 __name(assertByteArrayOffsetIsNotOutOfRange, "assertByteArrayOffsetIsNotOutOfRange");
-function addEncoderSizePrefix(encoder5, prefix) {
+function addEncoderSizePrefix(encoder6, prefix) {
   const write = /* @__PURE__ */ __name(((value, bytes, offset) => {
-    const encoderBytes = encoder5.encode(value);
+    const encoderBytes = encoder6.encode(value);
     offset = prefix.write(encoderBytes.length, bytes, offset);
     bytes.set(encoderBytes, offset);
     return offset + encoderBytes.length;
   }), "write");
-  if (isFixedSize(prefix) && isFixedSize(encoder5)) {
-    return createEncoder({ ...encoder5, fixedSize: prefix.fixedSize + encoder5.fixedSize, write });
+  if (isFixedSize(prefix) && isFixedSize(encoder6)) {
+    return createEncoder({ ...encoder6, fixedSize: prefix.fixedSize + encoder6.fixedSize, write });
   }
   const prefixMaxSize = isFixedSize(prefix) ? prefix.fixedSize : prefix.maxSize ?? null;
-  const encoderMaxSize = isFixedSize(encoder5) ? encoder5.fixedSize : encoder5.maxSize ?? null;
+  const encoderMaxSize = isFixedSize(encoder6) ? encoder6.fixedSize : encoder6.maxSize ?? null;
   const maxSize = prefixMaxSize !== null && encoderMaxSize !== null ? prefixMaxSize + encoderMaxSize : null;
   return createEncoder({
-    ...encoder5,
+    ...encoder6,
     ...maxSize !== null ? { maxSize } : {},
     getSizeFromValue: /* @__PURE__ */ __name((value) => {
-      const encoderSize = getEncodedSize(value, encoder5);
+      const encoderSize = getEncodedSize(value, encoder6);
       return getEncodedSize(encoderSize, prefix) + encoderSize;
     }, "getSizeFromValue"),
     write
   });
 }
 __name(addEncoderSizePrefix, "addEncoderSizePrefix");
-function addDecoderSizePrefix(decoder2, prefix) {
+function addDecoderSizePrefix(decoder3, prefix) {
   const read = /* @__PURE__ */ __name(((bytes, offset) => {
     const [bigintSize, decoderOffset] = prefix.read(bytes, offset);
     const size5 = Number(bigintSize);
@@ -31615,15 +31615,15 @@ function addDecoderSizePrefix(decoder2, prefix) {
       bytes = bytes.slice(offset, offset + size5);
     }
     assertByteArrayHasEnoughBytesForCodec("addDecoderSizePrefix", size5, bytes);
-    return [decoder2.decode(bytes), offset + size5];
+    return [decoder3.decode(bytes), offset + size5];
   }), "read");
-  if (isFixedSize(prefix) && isFixedSize(decoder2)) {
-    return createDecoder({ ...decoder2, fixedSize: prefix.fixedSize + decoder2.fixedSize, read });
+  if (isFixedSize(prefix) && isFixedSize(decoder3)) {
+    return createDecoder({ ...decoder3, fixedSize: prefix.fixedSize + decoder3.fixedSize, read });
   }
   const prefixMaxSize = isFixedSize(prefix) ? prefix.fixedSize : prefix.maxSize ?? null;
-  const decoderMaxSize = isFixedSize(decoder2) ? decoder2.fixedSize : decoder2.maxSize ?? null;
+  const decoderMaxSize = isFixedSize(decoder3) ? decoder3.fixedSize : decoder3.maxSize ?? null;
   const maxSize = prefixMaxSize !== null && decoderMaxSize !== null ? prefixMaxSize + decoderMaxSize : null;
-  return createDecoder({ ...decoder2, ...maxSize !== null ? { maxSize } : {}, read });
+  return createDecoder({ ...decoder3, ...maxSize !== null ? { maxSize } : {}, read });
 }
 __name(addDecoderSizePrefix, "addDecoderSizePrefix");
 function toArrayBuffer(bytes, offset, length) {
@@ -31641,11 +31641,11 @@ function toArrayBuffer(bytes, offset, length) {
   return (bytesOffset === 0 || bytesOffset === -bytes.byteLength) && bytesLength === bytes.byteLength ? buffer2 : buffer2.slice(bytesOffset, bytesOffset + bytesLength);
 }
 __name(toArrayBuffer, "toArrayBuffer");
-function fixEncoderSize(encoder5, fixedBytes) {
+function fixEncoderSize(encoder6, fixedBytes) {
   return createEncoder({
     fixedSize: fixedBytes,
     write: /* @__PURE__ */ __name((value, bytes, offset) => {
-      const variableByteArray = encoder5.encode(value);
+      const variableByteArray = encoder6.encode(value);
       const fixedByteArray = variableByteArray.length > fixedBytes ? variableByteArray.slice(0, fixedBytes) : variableByteArray;
       bytes.set(fixedByteArray, offset);
       return offset + fixedBytes;
@@ -31653,7 +31653,7 @@ function fixEncoderSize(encoder5, fixedBytes) {
   });
 }
 __name(fixEncoderSize, "fixEncoderSize");
-function fixDecoderSize(decoder2, fixedBytes) {
+function fixDecoderSize(decoder3, fixedBytes) {
   return createDecoder({
     fixedSize: fixedBytes,
     read: /* @__PURE__ */ __name((bytes, offset) => {
@@ -31661,23 +31661,23 @@ function fixDecoderSize(decoder2, fixedBytes) {
       if (offset > 0 || bytes.length > fixedBytes) {
         bytes = bytes.slice(offset, offset + fixedBytes);
       }
-      if (isFixedSize(decoder2)) {
-        bytes = fixBytes(bytes, decoder2.fixedSize);
+      if (isFixedSize(decoder3)) {
+        bytes = fixBytes(bytes, decoder3.fixedSize);
       }
-      const [value] = decoder2.read(bytes, 0);
+      const [value] = decoder3.read(bytes, 0);
       return [value, offset + fixedBytes];
     }, "read")
   });
 }
 __name(fixDecoderSize, "fixDecoderSize");
-function offsetEncoder(encoder5, config2) {
+function offsetEncoder(encoder6, config2) {
   return createEncoder({
-    ...encoder5,
+    ...encoder6,
     write: /* @__PURE__ */ __name((value, bytes, preOffset) => {
       const wrapBytes = /* @__PURE__ */ __name((offset) => modulo(offset, bytes.length), "wrapBytes");
       const newPreOffset = config2.preOffset ? config2.preOffset({ bytes, preOffset, wrapBytes }) : preOffset;
       assertByteArrayOffsetIsNotOutOfRange("offsetEncoder", newPreOffset, bytes.length);
-      const postOffset = encoder5.write(value, bytes, newPreOffset);
+      const postOffset = encoder6.write(value, bytes, newPreOffset);
       const newPostOffset = config2.postOffset ? config2.postOffset({ bytes, newPreOffset, postOffset, preOffset, wrapBytes }) : postOffset;
       assertByteArrayOffsetIsNotOutOfRange("offsetEncoder", newPostOffset, bytes.length);
       return newPostOffset;
@@ -31685,14 +31685,14 @@ function offsetEncoder(encoder5, config2) {
   });
 }
 __name(offsetEncoder, "offsetEncoder");
-function offsetDecoder(decoder2, config2) {
+function offsetDecoder(decoder3, config2) {
   return createDecoder({
-    ...decoder2,
+    ...decoder3,
     read: /* @__PURE__ */ __name((bytes, preOffset) => {
       const wrapBytes = /* @__PURE__ */ __name((offset) => modulo(offset, bytes.length), "wrapBytes");
       const newPreOffset = config2.preOffset ? config2.preOffset({ bytes, preOffset, wrapBytes }) : preOffset;
       assertByteArrayOffsetIsNotOutOfRange("offsetDecoder", newPreOffset, bytes.length);
-      const [value, postOffset] = decoder2.read(bytes, newPreOffset);
+      const [value, postOffset] = decoder3.read(bytes, newPreOffset);
       const newPostOffset = config2.postOffset ? config2.postOffset({ bytes, newPreOffset, postOffset, preOffset, wrapBytes }) : postOffset;
       assertByteArrayOffsetIsNotOutOfRange("offsetDecoder", newPostOffset, bytes.length);
       return [value, newPostOffset];
@@ -31705,21 +31705,21 @@ function modulo(dividend, divisor) {
   return (dividend % divisor + divisor) % divisor;
 }
 __name(modulo, "modulo");
-function resizeEncoder(encoder5, resize) {
-  if (isFixedSize(encoder5)) {
-    const fixedSize = resize(encoder5.fixedSize);
+function resizeEncoder(encoder6, resize) {
+  if (isFixedSize(encoder6)) {
+    const fixedSize = resize(encoder6.fixedSize);
     if (fixedSize < 0) {
       throw new SolanaError(SOLANA_ERROR__CODECS__EXPECTED_POSITIVE_BYTE_LENGTH, {
         bytesLength: fixedSize,
         codecDescription: "resizeEncoder"
       });
     }
-    return createEncoder({ ...encoder5, fixedSize });
+    return createEncoder({ ...encoder6, fixedSize });
   }
   return createEncoder({
-    ...encoder5,
+    ...encoder6,
     getSizeFromValue: /* @__PURE__ */ __name((value) => {
-      const newSize = resize(encoder5.getSizeFromValue(value));
+      const newSize = resize(encoder6.getSizeFromValue(value));
       if (newSize < 0) {
         throw new SolanaError(SOLANA_ERROR__CODECS__EXPECTED_POSITIVE_BYTE_LENGTH, {
           bytesLength: newSize,
@@ -31731,46 +31731,46 @@ function resizeEncoder(encoder5, resize) {
   });
 }
 __name(resizeEncoder, "resizeEncoder");
-function resizeDecoder(decoder2, resize) {
-  if (isFixedSize(decoder2)) {
-    const fixedSize = resize(decoder2.fixedSize);
+function resizeDecoder(decoder3, resize) {
+  if (isFixedSize(decoder3)) {
+    const fixedSize = resize(decoder3.fixedSize);
     if (fixedSize < 0) {
       throw new SolanaError(SOLANA_ERROR__CODECS__EXPECTED_POSITIVE_BYTE_LENGTH, {
         bytesLength: fixedSize,
         codecDescription: "resizeDecoder"
       });
     }
-    return createDecoder({ ...decoder2, fixedSize });
+    return createDecoder({ ...decoder3, fixedSize });
   }
-  return decoder2;
+  return decoder3;
 }
 __name(resizeDecoder, "resizeDecoder");
-function padLeftEncoder(encoder5, offset) {
+function padLeftEncoder(encoder6, offset) {
   return offsetEncoder(
-    resizeEncoder(encoder5, (size5) => size5 + offset),
+    resizeEncoder(encoder6, (size5) => size5 + offset),
     { preOffset: /* @__PURE__ */ __name(({ preOffset }) => preOffset + offset, "preOffset") }
   );
 }
 __name(padLeftEncoder, "padLeftEncoder");
-function padRightDecoder(decoder2, offset) {
+function padRightDecoder(decoder3, offset) {
   return offsetDecoder(
-    resizeDecoder(decoder2, (size5) => size5 + offset),
+    resizeDecoder(decoder3, (size5) => size5 + offset),
     { postOffset: /* @__PURE__ */ __name(({ postOffset }) => postOffset + offset, "postOffset") }
   );
 }
 __name(padRightDecoder, "padRightDecoder");
-function transformEncoder(encoder5, unmap) {
+function transformEncoder(encoder6, unmap) {
   return createEncoder({
-    ...isVariableSize(encoder5) ? { ...encoder5, getSizeFromValue: /* @__PURE__ */ __name((value) => encoder5.getSizeFromValue(unmap(value)), "getSizeFromValue") } : encoder5,
-    write: /* @__PURE__ */ __name((value, bytes, offset) => encoder5.write(unmap(value), bytes, offset), "write")
+    ...isVariableSize(encoder6) ? { ...encoder6, getSizeFromValue: /* @__PURE__ */ __name((value) => encoder6.getSizeFromValue(unmap(value)), "getSizeFromValue") } : encoder6,
+    write: /* @__PURE__ */ __name((value, bytes, offset) => encoder6.write(unmap(value), bytes, offset), "write")
   });
 }
 __name(transformEncoder, "transformEncoder");
-function transformDecoder(decoder2, map) {
+function transformDecoder(decoder3, map) {
   return createDecoder({
-    ...decoder2,
+    ...decoder3,
     read: /* @__PURE__ */ __name((bytes, offset) => {
-      const [value, newOffset] = decoder2.read(bytes, offset);
+      const [value, newOffset] = decoder3.read(bytes, offset);
       return [map(value, bytes, offset), newOffset];
     }, "read")
   });
@@ -31897,12 +31897,12 @@ var getUtf8Decoder = /* @__PURE__ */ __name(() => {
 }, "getUtf8Decoder");
 
 // node_modules/@solana/accounts/dist/index.node.mjs
-function decodeAccount(encodedAccount, decoder2) {
+function decodeAccount(encodedAccount, decoder3) {
   try {
     if ("exists" in encodedAccount && !encodedAccount.exists) {
       return encodedAccount;
     }
-    return Object.freeze({ ...encodedAccount, data: decoder2.decode(encodedAccount.data) });
+    return Object.freeze({ ...encodedAccount, data: decoder3.decode(encodedAccount.data) });
   } catch {
     throw new SolanaError(SOLANA_ERROR__ACCOUNTS__FAILED_TO_DECODE_ACCOUNT, {
       address: encodedAccount.address
@@ -32742,9 +32742,9 @@ function getEnumDecoder(constructor, config2 = {}) {
   });
 }
 __name(getEnumDecoder, "getEnumDecoder");
-function getHiddenPrefixDecoder(decoder2, prefixedDecoders) {
+function getHiddenPrefixDecoder(decoder3, prefixedDecoders) {
   return transformDecoder(
-    getTupleDecoder([...prefixedDecoders, decoder2]),
+    getTupleDecoder([...prefixedDecoders, decoder3]),
     (tuple) => tuple[tuple.length - 1]
   );
 }
@@ -33673,36 +33673,36 @@ function prependTransactionMessageInstructions(instructions, transactionMessage)
   });
 }
 __name(prependTransactionMessageInstructions, "prependTransactionMessageInstructions");
-function getAccountMetas(message) {
-  const { header } = message;
+function getAccountMetas(message2) {
+  const { header } = message2;
   const numWritableSignerAccounts = header.numSignerAccounts - header.numReadonlySignerAccounts;
-  const numWritableNonSignerAccounts = message.staticAccounts.length - header.numSignerAccounts - header.numReadonlyNonSignerAccounts;
+  const numWritableNonSignerAccounts = message2.staticAccounts.length - header.numSignerAccounts - header.numReadonlyNonSignerAccounts;
   const accountMetas = [];
   let accountIndex = 0;
   for (let i = 0; i < numWritableSignerAccounts; i++) {
     accountMetas.push({
-      address: message.staticAccounts[accountIndex],
+      address: message2.staticAccounts[accountIndex],
       role: AccountRole.WRITABLE_SIGNER
     });
     accountIndex++;
   }
   for (let i = 0; i < header.numReadonlySignerAccounts; i++) {
     accountMetas.push({
-      address: message.staticAccounts[accountIndex],
+      address: message2.staticAccounts[accountIndex],
       role: AccountRole.READONLY_SIGNER
     });
     accountIndex++;
   }
   for (let i = 0; i < numWritableNonSignerAccounts; i++) {
     accountMetas.push({
-      address: message.staticAccounts[accountIndex],
+      address: message2.staticAccounts[accountIndex],
       role: AccountRole.WRITABLE
     });
     accountIndex++;
   }
   for (let i = 0; i < header.numReadonlyNonSignerAccounts; i++) {
     accountMetas.push({
-      address: message.staticAccounts[accountIndex],
+      address: message2.staticAccounts[accountIndex],
       role: AccountRole.READONLY
     });
     accountIndex++;
@@ -35354,10 +35354,10 @@ function demultiplexDataPublisher(publisher, sourceChannelName, messageTransform
           if (!transformResult) {
             return;
           }
-          const [destinationChannelName, message] = transformResult;
+          const [destinationChannelName, message2] = transformResult;
           eventTarget.dispatchEvent(
             new CustomEvent(destinationChannelName, {
-              detail: message
+              detail: message2
             })
           );
         });
@@ -35474,7 +35474,7 @@ function transformChannelInboundMessages(channel, transform) {
       }
       return channel.on(
         "message",
-        (message) => subscriber(transform(message)),
+        (message2) => subscriber(transform(message2)),
         options
       );
     }
@@ -35484,7 +35484,7 @@ __name(transformChannelInboundMessages, "transformChannelInboundMessages");
 function transformChannelOutboundMessages(channel, transform) {
   return Object.freeze({
     ...channel,
-    send: /* @__PURE__ */ __name((message) => channel.send(transform(message)), "send")
+    send: /* @__PURE__ */ __name((message2) => channel.send(transform(message2)), "send")
   });
 }
 __name(transformChannelOutboundMessages, "transformChannelOutboundMessages");
@@ -35542,12 +35542,12 @@ function getMemoizedDemultiplexedNotificationPublisherFromChannelAndResponseTran
     publisherByResponseTransformer.set(
       responseTransformerKey,
       publisher = demultiplexDataPublisher(channel, "message", (rawMessage) => {
-        const message = rawMessage;
-        if (!("method" in message)) {
+        const message2 = rawMessage;
+        if (!("method" in message2)) {
           return;
         }
-        const transformedNotification = responseTransformer ? responseTransformer(message.params.result, subscribeRequest) : message.params.result;
-        return [`notification:${message.params.subscription}`, transformedNotification];
+        const transformedNotification = responseTransformer ? responseTransformer(message2.params.result, subscribeRequest) : message2.params.result;
+        return [`notification:${message2.params.subscription}`, transformedNotification];
       })
     );
   }
@@ -35606,13 +35606,13 @@ async function executeRpcPubSubSubscriptionPlan({
     );
     channel.on(
       "message",
-      (message) => {
-        if (message && typeof message === "object" && "id" in message && message.id === subscribePayload.id) {
+      (message2) => {
+        if (message2 && typeof message2 === "object" && "id" in message2 && message2.id === subscribePayload.id) {
           abortController.abort();
-          if ("error" in message) {
-            reject(getSolanaErrorFromJsonRpcError(message.error));
+          if ("error" in message2) {
+            reject(getSolanaErrorFromJsonRpcError(message2.error));
           } else {
-            resolve(message.result);
+            resolve(message2.result);
           }
         }
       },
@@ -35945,7 +35945,7 @@ function createWebSocketChannel({
     hasConnected = true;
     resolveOpen({
       ...dataPublisher,
-      async send(message) {
+      async send(message2) {
         if (webSocket.readyState !== l.OPEN) {
           throw new SolanaError(SOLANA_ERROR__RPC_SUBSCRIPTIONS__CHANNEL_CONNECTION_CLOSED);
         }
@@ -35975,13 +35975,13 @@ function createWebSocketChannel({
           };
         }
         if (bufferDrainWatcher) {
-          if (ArrayBuffer.isView(message) && !(message instanceof DataView)) {
-            const TypedArrayConstructor = message.constructor;
-            message = new TypedArrayConstructor(message);
+          if (ArrayBuffer.isView(message2) && !(message2 instanceof DataView)) {
+            const TypedArrayConstructor = message2.constructor;
+            message2 = new TypedArrayConstructor(message2);
           }
           await bufferDrainWatcher.promise;
         }
-        webSocket.send(message);
+        webSocket.send(message2);
       }
     });
   }
@@ -36226,11 +36226,11 @@ function createDefaultRpcSubscriptionsChannelCreatorImpl(config2) {
 }
 __name(createDefaultRpcSubscriptionsChannelCreatorImpl, "createDefaultRpcSubscriptionsChannelCreatorImpl");
 function getRpcSubscriptionsTransportWithSubscriptionCoalescing(transport) {
-  const cache2 = /* @__PURE__ */ new Map();
+  const cache3 = /* @__PURE__ */ new Map();
   return /* @__PURE__ */ __name(function rpcSubscriptionsTransportWithSubscriptionCoalescing(config2) {
     const { request, signal } = config2;
     const subscriptionConfigurationHash = index_default([request.methodName, request.params]);
-    let cachedDataPublisherPromise = cache2.get(subscriptionConfigurationHash);
+    let cachedDataPublisherPromise = cache3.get(subscriptionConfigurationHash);
     if (!cachedDataPublisherPromise) {
       const abortController = new e5();
       const dataPublisherPromise = transport({
@@ -36241,14 +36241,14 @@ function getRpcSubscriptionsTransportWithSubscriptionCoalescing(transport) {
         dataPublisher.on(
           "error",
           () => {
-            cache2.delete(subscriptionConfigurationHash);
+            cache3.delete(subscriptionConfigurationHash);
             abortController.abort();
           },
           { signal: abortController.signal }
         );
       }).catch(() => {
       });
-      cache2.set(
+      cache3.set(
         subscriptionConfigurationHash,
         cachedDataPublisherPromise = {
           abortController,
@@ -36265,7 +36265,7 @@ function getRpcSubscriptionsTransportWithSubscriptionCoalescing(transport) {
         if (cachedDataPublisherPromise.numSubscribers === 0) {
           queueMicrotask(() => {
             if (cachedDataPublisherPromise.numSubscribers === 0) {
-              cache2.delete(subscriptionConfigurationHash);
+              cache3.delete(subscriptionConfigurationHash);
               cachedDataPublisherPromise.abortController.abort();
             }
           });
@@ -36365,7 +36365,7 @@ async function createSignerFromKeyPair(keyPair) {
     keyPair,
     signMessages: /* @__PURE__ */ __name((messages) => Promise.all(
       messages.map(
-        async (message) => Object.freeze({ [address2]: await signBytes(keyPair.privateKey, message.content) })
+        async (message2) => Object.freeze({ [address2]: await signBytes(keyPair.privateKey, message2.content) })
       )
     ), "signMessages"),
     signTransactions: /* @__PURE__ */ __name((transactions) => Promise.all(
@@ -39558,13 +39558,13 @@ async function settle2(signer, payload, paymentRequirements, config2) {
     config2?.svmConfig?.rpcUrl
   );
   try {
-    const { success, errorReason, signature } = await sendAndConfirmSignedTransaction(
+    const { success: success2, errorReason, signature } = await sendAndConfirmSignedTransaction(
       signedTransaction,
       rpc,
       rpcSubscriptions
     );
     return {
-      success,
+      success: success2,
       errorReason,
       payer,
       transaction: signature,
@@ -40034,10 +40034,975 @@ function paymentMiddleware(payTo, routes, facilitator, paywall) {
 }
 __name(paymentMiddleware, "paymentMiddleware");
 
+// node_modules/jose/dist/webapi/lib/buffer_utils.js
+var encoder5 = new TextEncoder();
+var decoder2 = new TextDecoder();
+var strictDecoder = new TextDecoder("utf-8", { fatal: true });
+var MAX_INT32 = 2 ** 32;
+function concat3(...buffers) {
+  const size5 = buffers.reduce((acc, { length }) => acc + length, 0);
+  const buf = new Uint8Array(size5);
+  let i = 0;
+  for (const buffer2 of buffers) {
+    buf.set(buffer2, i);
+    i += buffer2.length;
+  }
+  return buf;
+}
+__name(concat3, "concat");
+function encode4(string) {
+  const bytes = new Uint8Array(string.length);
+  for (let i = 0; i < string.length; i++) {
+    const code = string.charCodeAt(i);
+    if (code > 127) {
+      throw new TypeError("non-ASCII string encountered in encode()");
+    }
+    bytes[i] = code;
+  }
+  return bytes;
+}
+__name(encode4, "encode");
+
+// node_modules/jose/dist/webapi/lib/crypto_key.js
+var unusable = /* @__PURE__ */ __name((name, prop = "algorithm.name") => new TypeError(`CryptoKey does not support this operation, its ${prop} must be ${name}`), "unusable");
+function checkUsage(key, usage) {
+  if (usage && !key.usages.includes(usage)) {
+    throw new TypeError(`CryptoKey does not support this operation, its usages must include ${usage}.`);
+  }
+}
+__name(checkUsage, "checkUsage");
+function checkModulusLength(alg, key) {
+  const { modulusLength } = key.algorithm;
+  if (typeof modulusLength !== "number" || modulusLength < 2048) {
+    throw new TypeError(`${alg} requires key modulusLength to be 2048 bits or larger`);
+  }
+}
+__name(checkModulusLength, "checkModulusLength");
+function checkCryptoKey(key, expected, usage) {
+  const algorithm = key.algorithm;
+  if (algorithm.name !== expected.name) {
+    throw unusable(expected.name);
+  }
+  if (expected.hash && algorithm.hash?.name !== expected.hash) {
+    throw unusable(expected.hash, "algorithm.hash");
+  }
+  if (expected.namedCurve && algorithm.namedCurve !== expected.namedCurve) {
+    throw unusable(expected.namedCurve, "algorithm.namedCurve");
+  }
+  if (expected.length !== void 0 && algorithm.length !== expected.length) {
+    throw unusable(expected.length, "algorithm.length");
+  }
+  checkUsage(key, usage);
+}
+__name(checkCryptoKey, "checkCryptoKey");
+
+// node_modules/jose/dist/webapi/lib/invalid_key_input.js
+function message(msg, actual, ...types) {
+  if (types.length > 2) {
+    const last = types.pop();
+    msg += `one of type ${types.join(", ")}, or ${last}.`;
+  } else if (types.length === 2) {
+    msg += `one of type ${types[0]} or ${types[1]}.`;
+  } else {
+    msg += `of type ${types[0]}.`;
+  }
+  if (actual == null) {
+    msg += ` Received ${actual}`;
+  } else if (typeof actual === "function" && actual.name) {
+    msg += ` Received function ${actual.name}`;
+  } else if (typeof actual === "object" && actual != null) {
+    if (actual.constructor?.name) {
+      msg += ` Received an instance of ${actual.constructor.name}`;
+    }
+  }
+  return msg;
+}
+__name(message, "message");
+var withAlg = /* @__PURE__ */ __name((alg, actual, ...types) => message(`Key for the ${alg} algorithm must be `, actual, ...types), "withAlg");
+
+// node_modules/jose/dist/webapi/util/errors.js
+var JOSEError = class extends Error {
+  static {
+    __name(this, "JOSEError");
+  }
+  static code = "ERR_JOSE_GENERIC";
+  code = "ERR_JOSE_GENERIC";
+  constructor(message2, options) {
+    super(message2, options);
+    this.name = this.constructor.name;
+    Error.captureStackTrace?.(this, this.constructor);
+  }
+};
+var JOSENotSupported = class extends JOSEError {
+  static {
+    __name(this, "JOSENotSupported");
+  }
+  static code = "ERR_JOSE_NOT_SUPPORTED";
+  code = "ERR_JOSE_NOT_SUPPORTED";
+};
+var JWSInvalid = class extends JOSEError {
+  static {
+    __name(this, "JWSInvalid");
+  }
+  static code = "ERR_JWS_INVALID";
+  code = "ERR_JWS_INVALID";
+};
+var JWTInvalid = class extends JOSEError {
+  static {
+    __name(this, "JWTInvalid");
+  }
+  static code = "ERR_JWT_INVALID";
+  code = "ERR_JWT_INVALID";
+};
+
+// node_modules/jose/dist/webapi/lib/is_key_like.js
+var isCryptoKey = /* @__PURE__ */ __name((key) => {
+  if (key?.[Symbol.toStringTag] === "CryptoKey")
+    return true;
+  try {
+    return key instanceof CryptoKey;
+  } catch {
+    return false;
+  }
+}, "isCryptoKey");
+var isKeyObject = /* @__PURE__ */ __name((key) => key?.[Symbol.toStringTag] === "KeyObject", "isKeyObject");
+var isKeyLike = /* @__PURE__ */ __name((key) => isCryptoKey(key) || isKeyObject(key), "isKeyLike");
+
+// node_modules/jose/dist/webapi/lib/base64.js
+function encodeBase64(input) {
+  if (Uint8Array.prototype.toBase64) {
+    return input.toBase64();
+  }
+  const CHUNK_SIZE = 32768;
+  const arr = [];
+  for (let i = 0; i < input.length; i += CHUNK_SIZE) {
+    arr.push(String.fromCharCode.apply(null, input.subarray(i, i + CHUNK_SIZE)));
+  }
+  return btoa(arr.join(""));
+}
+__name(encodeBase64, "encodeBase64");
+function decodeBase64(encoded) {
+  if (Uint8Array.fromBase64) {
+    return Uint8Array.fromBase64(encoded);
+  }
+  const binary = atob(encoded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+__name(decodeBase64, "decodeBase64");
+
+// node_modules/jose/dist/webapi/util/base64url.js
+var invalid = "The input to be decoded is not correctly encoded.";
+function decode2(input) {
+  if (Uint8Array.fromBase64) {
+    try {
+      return Uint8Array.fromBase64(typeof input === "string" ? input : decoder2.decode(input), {
+        alphabet: "base64url"
+      });
+    } catch (cause) {
+      throw new TypeError(invalid, { cause });
+    }
+  }
+  let encoded = input;
+  if (encoded instanceof Uint8Array) {
+    encoded = decoder2.decode(encoded);
+  }
+  if (encoded.includes("+") || encoded.includes("/")) {
+    throw new TypeError(invalid);
+  }
+  encoded = encoded.replace(/-/g, "+").replace(/_/g, "/");
+  try {
+    return decodeBase64(encoded);
+  } catch {
+    throw new TypeError(invalid);
+  }
+}
+__name(decode2, "decode");
+function encode5(input) {
+  let unencoded = input;
+  if (typeof unencoded === "string") {
+    unencoded = encoder5.encode(unencoded);
+  }
+  if (Uint8Array.prototype.toBase64) {
+    return unencoded.toBase64({ alphabet: "base64url", omitPadding: true });
+  }
+  return encodeBase64(unencoded).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+}
+__name(encode5, "encode");
+
+// node_modules/jose/dist/webapi/lib/type_checks.js
+function isObject2(input) {
+  if (typeof input !== "object" || input === null || Object.prototype.toString.call(input) !== "[object Object]") {
+    return false;
+  }
+  const prototype = Object.getPrototypeOf(input);
+  return prototype === null || Object.getPrototypeOf(prototype) === null;
+}
+__name(isObject2, "isObject");
+
+// node_modules/jose/dist/webapi/lib/helpers.js
+function assertNotSet(value, name) {
+  if (value !== void 0) {
+    throw new TypeError(`${name} can only be called once`);
+  }
+}
+__name(assertNotSet, "assertNotSet");
+
+// node_modules/jose/dist/webapi/lib/jwk_to_key.js
+async function jwkToKey(entry, jwk) {
+  if (jwk.kty === "RSA" && "oth" in jwk && jwk.oth !== void 0) {
+    throw new JOSENotSupported('RSA JWK "oth" (Other Primes Info) Parameter value is not supported');
+  }
+  if (!entry.kty.includes(jwk.kty)) {
+    throw new JOSENotSupported('Invalid or unsupported JWK "alg" (Algorithm) Parameter value');
+  }
+  const algorithm = entry.resolve?.({ kty: jwk.kty, crv: jwk.crv }) ?? entry.subtle;
+  const isPrivate = !!(jwk.d || jwk.priv);
+  const keyData = { ...jwk };
+  if (keyData.kty !== "AKP") {
+    delete keyData.alg;
+  }
+  delete keyData.use;
+  return crypto.subtle.importKey("jwk", keyData, algorithm, jwk.ext ?? !isPrivate, jwk.key_ops ?? entry.usages[isPrivate ? 1 : 0]);
+}
+__name(jwkToKey, "jwkToKey");
+
+// node_modules/jose/dist/webapi/lib/jwk_metadata.js
+function snapshotJwk(jwk) {
+  return { __proto__: null, ...jwk };
+}
+__name(snapshotJwk, "snapshotJwk");
+function normalizeJwk(jwk) {
+  const normalized = snapshotJwk(jwk);
+  if (normalized.ext !== void 0 && typeof normalized.ext !== "boolean") {
+    throw new TypeError('"ext" (Extractable) Parameter must be a boolean');
+  }
+  if (normalized.key_ops !== void 0) {
+    const value = normalized.key_ops;
+    const keyOps = Array.isArray(value) ? [...value] : void 0;
+    if (!keyOps || keyOps.some((operation) => typeof operation !== "string") || new Set(keyOps).size !== keyOps.length) {
+      throw new TypeError('"key_ops" (Key Operations) Parameter must be an array of unique strings');
+    }
+    normalized.key_ops = keyOps;
+  }
+  return normalized;
+}
+__name(normalizeJwk, "normalizeJwk");
+
+// node_modules/jose/dist/webapi/lib/key.js
+var tag = /* @__PURE__ */ __name((key) => key[Symbol.toStringTag], "tag");
+var jwkMatchesOp = /* @__PURE__ */ __name((entry, key, usage) => {
+  const { alg } = entry;
+  if (key.use !== void 0) {
+    const expected = usage === "sign" || usage === "verify" ? "sig" : "enc";
+    if (key.use !== expected) {
+      throw new TypeError(`Invalid key for this operation, its "use" must be "${expected}" when present`);
+    }
+  }
+  if (key.alg !== void 0 && key.alg !== alg) {
+    throw new TypeError(`Invalid key for this operation, its "alg" must be "${alg}" when present`);
+  }
+  if (Array.isArray(key.key_ops)) {
+    const expectedKeyOp = usage === "encrypt" || usage === "decrypt" ? entry.ops?.[usage === "encrypt" ? 0 : 1] : usage;
+    if (expectedKeyOp && !key.key_ops.includes(expectedKeyOp)) {
+      throw new TypeError(`Invalid key for this operation, its "key_ops" must include "${expectedKeyOp}" when present`);
+    }
+  }
+}, "jwkMatchesOp");
+function checkKeyType(entry, key, usage) {
+  const { alg, secret } = entry;
+  const privateKey = usage === "decrypt" || usage === "sign";
+  if (secret && key instanceof Uint8Array)
+    return [BYTES, key];
+  if (isObject2(key)) {
+    const normalized = normalizeJwk(key);
+    if (typeof normalized.kty !== "string") {
+      throw new TypeError(secret ? withAlg(alg, key, "CryptoKey", "KeyObject", "JSON Web Key", "Uint8Array") : withAlg(alg, key, "CryptoKey", "KeyObject", "JSON Web Key"));
+    }
+    const valid = secret ? normalized.kty === "oct" && typeof normalized.k === "string" : normalized.kty !== "oct" && (privateKey ? normalized.kty === "AKP" && typeof normalized.priv === "string" || typeof normalized.d === "string" : normalized.d === void 0 && normalized.priv === void 0);
+    if (!valid) {
+      throw new TypeError(secret ? `JSON Web Key for symmetric algorithms must have JWK "kty" (Key Type) equal to "oct" and the JWK "k" (Key Value) present` : `JSON Web Key for this operation must be a ${privateKey ? "private" : "public"} JWK`);
+    }
+    jwkMatchesOp(entry, normalized, usage);
+    return [JWK, key, normalized];
+  }
+  if (!isKeyLike(key)) {
+    throw new TypeError(secret ? withAlg(alg, key, "CryptoKey", "KeyObject", "JSON Web Key", "Uint8Array") : withAlg(alg, key, "CryptoKey", "KeyObject", "JSON Web Key"));
+  }
+  if (secret) {
+    if (key.type !== "secret") {
+      throw new TypeError(`${tag(key)} instances for symmetric algorithms must be of type "secret"`);
+    }
+  } else {
+    if (key.type === "secret") {
+      throw new TypeError(`${tag(key)} instances for asymmetric algorithms must not be of type "secret"`);
+    }
+    const expectedType = privateKey ? "private" : "public";
+    if ((key.type === "public" || key.type === "private") && key.type !== expectedType) {
+      const operation = usage === "sign" ? "signing" : usage === "verify" ? "verifying" : `${usage.slice(0, -1)}tion`;
+      throw new TypeError(`${tag(key)} instances for asymmetric algorithm ${operation} must be of type "${expectedType}"`);
+    }
+  }
+  return isCryptoKey(key) ? [CRYPTO, key] : [KEYOBJECT, key];
+}
+__name(checkKeyType, "checkKeyType");
+var BYTES = 0;
+var CRYPTO = 1;
+var KEYOBJECT = 2;
+var JWK = 3;
+var cache2;
+var nist = {
+  __proto__: null,
+  prime256v1: "P-256",
+  secp384r1: "P-384",
+  secp521r1: "P-521"
+};
+function cached(key, alg, value) {
+  cache2 ||= /* @__PURE__ */ new WeakMap();
+  const entry = cache2.get(key);
+  if (value) {
+    if (entry) {
+      entry[alg] = value;
+    } else {
+      cache2.set(key, { [alg]: value });
+    }
+  }
+  return value ?? entry?.[alg];
+}
+__name(cached, "cached");
+var handleJWK = /* @__PURE__ */ __name(async (key, jwk, entry) => cached(key, entry.alg) ?? cached(key, entry.alg, await jwkToKey(entry, { ...jwk, alg: entry.alg })), "handleJWK");
+var handleKeyObject = /* @__PURE__ */ __name((keyObject, entry) => {
+  const hit = cached(keyObject, entry.alg);
+  if (hit)
+    return hit;
+  const isPublic = keyObject.type === "public";
+  const usages = entry.usages[isPublic ? 0 : 1];
+  const { asymmetricKeyType } = keyObject;
+  const crv = nist[keyObject.asymmetricKeyDetails?.namedCurve];
+  const params = entry.resolve?.({ crv, asymmetricKeyType }) ?? entry.subtle;
+  return cached(keyObject, entry.alg, keyObject.toCryptoKey(params, isPublic, usages));
+}, "handleKeyObject");
+async function prepareKey(entry, key, usage) {
+  const tagged = checkKeyType(entry, key, usage);
+  switch (tagged[0]) {
+    case BYTES:
+    case CRYPTO:
+      return tagged[1];
+    case JWK: {
+      const key2 = tagged[1];
+      const normalized = tagged[2];
+      if (normalized.kty === "oct") {
+        return decode2(normalized.k);
+      }
+      if (!Object.isFrozen(key2)) {
+        const { key_ops } = key2;
+        if (Array.isArray(key_ops))
+          Object.freeze(key_ops);
+        Object.freeze(key2);
+      }
+      return handleJWK(key2, normalized, entry);
+    }
+    case KEYOBJECT: {
+      const keyObject = tagged[1];
+      if (keyObject.type === "secret") {
+        return keyObject.export();
+      }
+      if ("toCryptoKey" in keyObject && typeof keyObject.toCryptoKey === "function") {
+        return handleKeyObject(keyObject, entry);
+      }
+      return handleJWK(keyObject, keyObject.export({ format: "jwk" }), entry);
+    }
+  }
+}
+__name(prepareKey, "prepareKey");
+
+// node_modules/jose/dist/webapi/lib/key_descriptor.js
+function table(entries) {
+  const out = { __proto__: null };
+  for (const alg in entries) {
+    out[alg] = { ...entries[alg], alg };
+  }
+  return out;
+}
+__name(table, "table");
+
+// node_modules/jose/dist/webapi/lib/options.js
+var JWS_RECOGNIZED = { __proto__: null, b64: true };
+function validateCritDuplicates(Err, protectedHeader) {
+  const { crit } = protectedHeader ?? {};
+  if (Array.isArray(crit) && new Set(crit).size !== crit.length) {
+    throw new Err('"crit" (Critical) Header Parameter MUST NOT contain duplicate values');
+  }
+}
+__name(validateCritDuplicates, "validateCritDuplicates");
+function validateCrit(Err, recognizedDefault, recognizedOption, protectedHeader, joseHeader) {
+  if (joseHeader.crit !== void 0 && protectedHeader?.crit === void 0) {
+    throw new Err('"crit" (Critical) Header Parameter MUST be integrity protected');
+  }
+  if (!protectedHeader || protectedHeader.crit === void 0) {
+    return [];
+  }
+  if (!Array.isArray(protectedHeader.crit) || protectedHeader.crit.length === 0 || protectedHeader.crit.some((input) => typeof input !== "string" || input.length === 0)) {
+    throw new Err('"crit" (Critical) Header Parameter MUST be an array of non-empty strings when present');
+  }
+  const recognized = recognizedOption === void 0 ? recognizedDefault : { __proto__: null, ...recognizedOption, ...recognizedDefault };
+  for (const parameter of protectedHeader.crit) {
+    if (!(parameter in recognized)) {
+      throw new JOSENotSupported(`Extension Header Parameter "${parameter}" is not recognized`);
+    }
+    if (!Object.hasOwn(joseHeader, parameter) || joseHeader[parameter] === void 0) {
+      throw new Err(`Extension Header Parameter "${parameter}" is missing`);
+    }
+    if (recognized[parameter] && (!Object.hasOwn(protectedHeader, parameter) || protectedHeader[parameter] === void 0)) {
+      throw new Err(`Extension Header Parameter "${parameter}" MUST be integrity protected`);
+    }
+  }
+  return protectedHeader.crit;
+}
+__name(validateCrit, "validateCrit");
+function validateB64(protectedHeader, extensions) {
+  if (extensions.includes("b64")) {
+    const b64 = protectedHeader.b64;
+    if (typeof b64 !== "boolean") {
+      throw new JWSInvalid('The "b64" (base64url-encode payload) Header Parameter must be a boolean');
+    }
+    return b64;
+  }
+  return true;
+}
+__name(validateB64, "validateB64");
+function serializeJoseHeader(Err, header) {
+  let serialized;
+  let parsed;
+  try {
+    serialized = JSON.stringify(header);
+    parsed = JSON.parse(serialized);
+  } catch (cause) {
+    throw new Err("JOSE Header is not valid JSON", { cause });
+  }
+  if (!isObject2(parsed)) {
+    throw new Err("JOSE Header is not a JSON object");
+  }
+  return [parsed, serialized];
+}
+__name(serializeJoseHeader, "serializeJoseHeader");
+
+// node_modules/jose/dist/webapi/lib/signing.js
+async function getSigKey(entry, key, usage) {
+  if (key instanceof Uint8Array) {
+    return crypto.subtle.importKey("raw", key, entry.subtle, false, [
+      usage
+    ]);
+  }
+  checkCryptoKey(key, entry.subtle, usage);
+  if (entry.minRsaBits)
+    checkModulusLength(entry.alg, key);
+  return key;
+}
+__name(getSigKey, "getSigKey");
+async function sign2(entry, key, data) {
+  const cryptoKey = await getSigKey(entry, key, "sign");
+  const signature = await crypto.subtle.sign(entry.signing, cryptoKey, data);
+  return new Uint8Array(signature);
+}
+__name(sign2, "sign");
+
+// node_modules/jose/dist/webapi/lib/jws_algorithms.js
+var sig = [["verify"], ["sign"]];
+function hmac2(bits) {
+  const subtle = { name: "HMAC", hash: `SHA-${bits}` };
+  return { kty: ["oct"], secret: true, subtle, signing: subtle, usages: sig };
+}
+__name(hmac2, "hmac");
+function rsa(bits, saltLength) {
+  const name = saltLength ? "RSA-PSS" : "RSASSA-PKCS1-v1_5";
+  const subtle = { name, hash: `SHA-${bits}` };
+  return {
+    kty: ["RSA"],
+    subtle,
+    signing: saltLength ? { ...subtle, saltLength } : subtle,
+    usages: sig,
+    minRsaBits: 2048
+  };
+}
+__name(rsa, "rsa");
+function ecdsa(crv, bits) {
+  return {
+    kty: ["EC"],
+    crv,
+    subtle: { name: "ECDSA", namedCurve: crv },
+    signing: { name: "ECDSA", hash: `SHA-${bits}` },
+    usages: sig
+  };
+}
+__name(ecdsa, "ecdsa");
+function eddsa() {
+  const subtle = { name: "Ed25519" };
+  return {
+    kty: ["OKP"],
+    crv: "Ed25519",
+    subtle,
+    signing: subtle,
+    usages: sig
+  };
+}
+__name(eddsa, "eddsa");
+function mldsa(bits) {
+  const name = `ML-DSA-${bits}`;
+  const subtle = { name };
+  return {
+    kty: ["AKP"],
+    subtle,
+    signing: subtle,
+    usages: sig
+  };
+}
+__name(mldsa, "mldsa");
+var JWS = table({
+  HS256: hmac2(256),
+  HS384: hmac2(384),
+  HS512: hmac2(512),
+  RS256: rsa(256),
+  RS384: rsa(384),
+  RS512: rsa(512),
+  PS256: rsa(256, 32),
+  PS384: rsa(384, 48),
+  PS512: rsa(512, 64),
+  ES256: ecdsa("P-256", 256),
+  ES384: ecdsa("P-384", 384),
+  ES512: ecdsa("P-521", 512),
+  EdDSA: eddsa(),
+  Ed25519: eddsa(),
+  "ML-DSA-44": mldsa(44),
+  "ML-DSA-65": mldsa(65),
+  "ML-DSA-87": mldsa(87)
+});
+function jwsAlgorithm(alg) {
+  const entry = typeof alg === "string" ? JWS[alg] : void 0;
+  if (!entry) {
+    throw new JOSENotSupported(`alg ${alg} is not supported either by JOSE or your javascript runtime`);
+  }
+  return entry;
+}
+__name(jwsAlgorithm, "jwsAlgorithm");
+
+// node_modules/jose/dist/webapi/lib/jwt_claims_set.js
+var epoch = /* @__PURE__ */ __name((date) => Math.floor(date.getTime() / 1e3), "epoch");
+var multipliers = {
+  s: 1,
+  m: 60,
+  h: 3600,
+  d: 86400,
+  w: 604800,
+  y: 31557600
+};
+var REGEX = /^(\+|\-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)(?: (ago|from now))?$/i;
+function invalidDuration() {
+  throw new TypeError("Invalid time period format");
+}
+__name(invalidDuration, "invalidDuration");
+function secs(str) {
+  if (typeof str !== "string") {
+    invalidDuration();
+  }
+  const matched = REGEX.exec(str);
+  if (!matched || matched[4] && matched[1]) {
+    invalidDuration();
+  }
+  const value = parseFloat(matched[2]);
+  const numericDate2 = Math.round(value * multipliers[matched[3][0].toLowerCase()]);
+  if (!Number.isFinite(numericDate2)) {
+    invalidDuration();
+  }
+  if (matched[1] === "-" || matched[4] === "ago") {
+    return -numericDate2;
+  }
+  return numericDate2;
+}
+__name(secs, "secs");
+function validateInput(label, input) {
+  if (!Number.isFinite(input)) {
+    throw new TypeError(`Invalid ${label} input`);
+  }
+  return input;
+}
+__name(validateInput, "validateInput");
+function validateStringClaim(claim, value) {
+  if (typeof value !== "string") {
+    throw new TypeError(`"${claim}" claim must be a string`);
+  }
+}
+__name(validateStringClaim, "validateStringClaim");
+function validateAudienceClaim(value) {
+  if (typeof value !== "string" && (!Array.isArray(value) || Array.from(value).some((member) => typeof member !== "string"))) {
+    throw new TypeError('"aud" claim must be a string or an array of strings');
+  }
+}
+__name(validateAudienceClaim, "validateAudienceClaim");
+function numericDate(value, label) {
+  if (typeof value === "number")
+    return validateInput(label, value);
+  if (value instanceof Date)
+    return validateInput(label, epoch(value));
+  return epoch(/* @__PURE__ */ new Date()) + secs(value);
+}
+__name(numericDate, "numericDate");
+var producerPayloads;
+function producerPayload(producer) {
+  return producerPayloads.get(producer);
+}
+__name(producerPayload, "producerPayload");
+function jwtData(producer) {
+  const payload = producerPayload(producer);
+  for (const claim of ["iat", "nbf", "exp"]) {
+    const value = payload[claim];
+    if (typeof value === "number" && !Number.isFinite(value)) {
+      throw new TypeError(`"${claim}" claim must be a finite number`);
+    }
+  }
+  return encoder5.encode(JSON.stringify(payload));
+}
+__name(jwtData, "jwtData");
+var JWTClaimsBuilder = class {
+  static {
+    __name(this, "JWTClaimsBuilder");
+  }
+  constructor(payload = {}) {
+    if (!isObject2(payload)) {
+      throw new TypeError("JWT Claims Set MUST be an object");
+    }
+    ;
+    (producerPayloads ||= /* @__PURE__ */ new WeakMap()).set(this, structuredClone(payload));
+  }
+  setIssuer(value) {
+    validateStringClaim("iss", value);
+    producerPayload(this).iss = value;
+    return this;
+  }
+  setSubject(value) {
+    validateStringClaim("sub", value);
+    producerPayload(this).sub = value;
+    return this;
+  }
+  setAudience(value) {
+    validateAudienceClaim(value);
+    producerPayload(this).aud = value;
+    return this;
+  }
+  setJti(value) {
+    validateStringClaim("jti", value);
+    producerPayload(this).jti = value;
+    return this;
+  }
+  setNotBefore(value) {
+    producerPayload(this).nbf = numericDate(value, "setNotBefore");
+    return this;
+  }
+  setExpirationTime(value) {
+    producerPayload(this).exp = numericDate(value, "setExpirationTime");
+    return this;
+  }
+  setIssuedAt(value) {
+    const payload = producerPayload(this);
+    if (value === void 0) {
+      payload.iat = epoch(/* @__PURE__ */ new Date());
+    } else if (typeof value === "string") {
+      payload.iat = validateInput("setIssuedAt", epoch(/* @__PURE__ */ new Date()) + secs(value));
+    } else {
+      payload.iat = numericDate(value, "setIssuedAt");
+    }
+    return this;
+  }
+};
+
+// node_modules/jose/dist/webapi/lib/jws_sign.js
+function serializeProtectedHeader(protectedHeader) {
+  if (protectedHeader === void 0)
+    return [void 0, ""];
+  const normalized = serializeJoseHeader(JWSInvalid, protectedHeader);
+  return [normalized[0], encode5(normalized[1])];
+}
+__name(serializeProtectedHeader, "serializeProtectedHeader");
+function validateSignatureHeader(protectedHeader, joseHeader, crit) {
+  validateCritDuplicates(JWSInvalid, protectedHeader);
+  return validateB64(protectedHeader, validateCrit(JWSInvalid, JWS_RECOGNIZED, crit, protectedHeader, joseHeader));
+}
+__name(validateSignatureHeader, "validateSignatureHeader");
+function signatureAlgorithm(joseHeader) {
+  const alg = joseHeader.alg;
+  if (typeof alg !== "string" || !alg) {
+    throw new JWSInvalid('JWS "alg" (Algorithm) Header Parameter missing or invalid');
+  }
+  return jwsAlgorithm(alg);
+}
+__name(signatureAlgorithm, "signatureAlgorithm");
+async function signSignature(protectedHeader, payload, entry, key) {
+  const data = concat3(encode4(protectedHeader), encode4("."), payload);
+  const k = await prepareKey(entry, key, "sign");
+  return encode5(await sign2(entry, k, data));
+}
+__name(signSignature, "signSignature");
+async function createCompactSignature(payload, inputProtectedHeader, inputCrit, key, rejectUnencoded) {
+  const [protectedHeader, protectedHeaderString] = serializeProtectedHeader(inputProtectedHeader);
+  if (!protectedHeader) {
+    throw new JWSInvalid("either setProtectedHeader or setUnprotectedHeader must be called before #sign()");
+  }
+  const b64 = validateSignatureHeader(protectedHeader, protectedHeader, inputCrit);
+  if (!b64)
+    rejectUnencoded();
+  const entry = signatureAlgorithm(protectedHeader);
+  const encodedPayload = encode5(payload);
+  const signature = await signSignature(protectedHeaderString, encode4(encodedPayload), entry, key);
+  return `${protectedHeaderString}.${encodedPayload}.${signature}`;
+}
+__name(createCompactSignature, "createCompactSignature");
+
+// node_modules/jose/dist/webapi/jwt/sign.js
+var SignJWT_base = JWTClaimsBuilder;
+var SignJWT = class extends SignJWT_base {
+  static {
+    __name(this, "SignJWT");
+  }
+  #protectedHeader;
+  setProtectedHeader(protectedHeader) {
+    assertNotSet(this.#protectedHeader, "setProtectedHeader");
+    this.#protectedHeader = protectedHeader;
+    return this;
+  }
+  async sign(key, options) {
+    return createCompactSignature(jwtData(this), this.#protectedHeader, options?.crit, key, () => {
+      throw new JWTInvalid("JWTs MUST NOT use unencoded payload");
+    });
+  }
+};
+
 // src/index.ts
 var app = new Hono2();
-var PROD_PAY_TO = "0xd38fe438F96C9E21AcdA8d3E9ecE8C4156157dc0";
-var PROD_NETWORK = "base";
+async function createCdpAuthHeaders(env) {
+  if (!env.CDP_API_KEY_ID || !env.CDP_API_KEY_SECRET) {
+    throw new Error("Missing CDP_API_KEY_ID or CDP_API_KEY_SECRET");
+  }
+  const privateKeyData = Buffer.from(env.CDP_API_KEY_SECRET, "base64");
+  const privateKeyJwk = await crypto.subtle.importKey(
+    "raw",
+    privateKeyData,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const now = Math.floor(Date.now() / 1e3);
+  const jwt = await new SignJWT({
+    sub: env.CDP_API_KEY_ID,
+    iss: env.CDP_API_KEY_ID,
+    iat: now,
+    exp: now + 3600
+    // 1 hour expiration
+  }).setProtectedHeader({ alg: "HS256", typ: "JWT" }).sign(privateKeyJwk);
+  return {
+    Authorization: `Bearer ${jwt}`
+  };
+}
+__name(createCdpAuthHeaders, "createCdpAuthHeaders");
+var NETWORK_CONFIG = {
+  base: {
+    network: "base",
+    chain_id: 8453,
+    pay_to: "0xd38fe438F96C9E21AcdA8d3E9ecE8C4156157dc0",
+    usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+  },
+  "base-sepolia": {
+    network: "base",
+    chain_id: 8453,
+    pay_to: "0xd38fe438F96C9E21AcdA8d3E9ecE8C4156157dc0",
+    usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+  }
+};
+function resolveNetworkConfig(env) {
+  const network = env.NETWORK;
+  const config2 = NETWORK_CONFIG[network];
+  if (!config2 || Number(env.CHAIN_ID) !== config2.chain_id || env.PAY_TO !== config2.pay_to || env.USDC !== config2.usdc) {
+    throw new Error("Invalid network configuration: NETWORK, PAY_TO, and USDC must be one supported tuple");
+  }
+  return config2;
+}
+__name(resolveNetworkConfig, "resolveNetworkConfig");
+var VERSION = "1.0.0";
+var MAX_BODY_BYTES = 512 * 1024;
+var MAX_JSON_DEPTH = 32;
+function success(cell, answer) {
+  return { ok: true, cell, answer, meta: { deterministic: true, version: VERSION } };
+}
+__name(success, "success");
+function failure(c, status, code, message2, expected_schema) {
+  return c.json({ ok: false, error: { code, message: message2, expected_schema } }, status);
+}
+__name(failure, "failure");
+function isRecord(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+__name(isRecord, "isRecord");
+function isPositiveNumber(value) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+__name(isPositiveNumber, "isPositiveNumber");
+function isCell001Request(value) {
+  const body = value;
+  return isRecord(body) && isRecord(body.source) && isRecord(body.target) && [body.source.width, body.source.height, body.target.width, body.target.height].every((n) => Number.isInteger(n) && n > 0) && (body.mode === void 0 || body.mode === "crop" || body.mode === "contain");
+}
+__name(isCell001Request, "isCell001Request");
+function isCell002Request(value) {
+  const body = value;
+  return isRecord(body) && body.operation === "diagonal" && isRecord(body.dimensions) && isPositiveNumber(body.dimensions.width) && isPositiveNumber(body.dimensions.length);
+}
+__name(isCell002Request, "isCell002Request");
+function isCell003Request(value) {
+  const body = value;
+  return isRecord(body) && (typeof body.raw_payload === "string" || Object.prototype.hasOwnProperty.call(body, "json_object")) && (body.strip_null_values === void 0 || typeof body.strip_null_values === "boolean") && (body.flatten_keys === void 0 || typeof body.flatten_keys === "boolean");
+}
+__name(isCell003Request, "isCell003Request");
+function isCell004Request(value) {
+  const body = value;
+  return isRecord(body) && isRecord(body.prompt) && (body.installed_nodes === void 0 || Array.isArray(body.installed_nodes) && body.installed_nodes.every((node) => typeof node === "string"));
+}
+__name(isCell004Request, "isCell004Request");
+var BUILT_IN_COMFY_NODES = /* @__PURE__ */ new Set([
+  "CheckpointLoaderSimple",
+  "CheckpointLoader",
+  "UNETLoader",
+  "VAELoader",
+  "CLIPLoader",
+  "KSampler",
+  "KSamplerAdvanced",
+  "EmptyLatentImage",
+  "EmptyLatentImage",
+  "CLIPTextEncode",
+  "VAEDecode",
+  "VAEEncode",
+  "SaveImage",
+  "PreviewImage",
+  "LoadImage",
+  "LatentUpscale",
+  "EmptyLatentAudio",
+  "PrimitiveNode",
+  "Reroute",
+  "Note",
+  "MarkdownNote"
+]);
+function isEmptyLink(value) {
+  return value === void 0 || value === null || Array.isArray(value) && value.length === 0;
+}
+__name(isEmptyLink, "isEmptyLink");
+function hasValue(inputs, field) {
+  return inputs !== void 0 && !isEmptyLink(inputs[field]);
+}
+__name(hasValue, "hasValue");
+function validatePositiveParameter(inputs, field, nodeId, issues) {
+  const value = inputs?.[field];
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    issues.push({ code: "INVALID_MODEL_PARAMETER", node_id: nodeId, field, message: `${field} must be a positive number`, severity: "error" });
+  }
+}
+__name(validatePositiveParameter, "validatePositiveParameter");
+function auditComfyWorkflow(body) {
+  const nodes = Object.keys(body.prompt);
+  const nodeSet = new Set(nodes);
+  const installed = new Set(body.installed_nodes ?? []);
+  const unresolved_links = [];
+  const missing_nodes = /* @__PURE__ */ new Set();
+  const issues = [];
+  let risk = 0;
+  for (const [nodeId, node] of Object.entries(body.prompt)) {
+    const classType = node.class_type ?? "";
+    if (!classType || !BUILT_IN_COMFY_NODES.has(classType) && !installed.has(classType)) {
+      missing_nodes.add(classType || nodeId);
+      issues.push({ code: "MISSING_NODE", node_id: nodeId, message: `Node class '${classType || "unknown"}' is not installed`, severity: "error" });
+      risk += 30;
+    }
+    for (const [field, value] of Object.entries(node.inputs ?? {})) {
+      if (isEmptyLink(value)) {
+        unresolved_links.push({ node_id: nodeId, field, issue: "Input is unlinked" });
+        issues.push({ code: "UNLINKED_INPUT", node_id: nodeId, field, message: `Input '${field}' is unlinked`, severity: "error" });
+        risk += 10;
+      } else if (Array.isArray(value) && value.length === 2) {
+        const targetId = String(value[0]);
+        if (!nodeSet.has(targetId)) {
+          unresolved_links.push({ node_id: nodeId, field, target_id: targetId, issue: "Dangling link to nonexistent node" });
+          issues.push({ code: "DANGLING_LINK", node_id: nodeId, field, message: `Input '${field}' targets nonexistent node '${targetId}'`, severity: "error" });
+          risk += 20;
+        }
+      }
+    }
+    if (["CheckpointLoaderSimple", "CheckpointLoader"].includes(classType)) {
+      if (!hasValue(node.inputs, "ckpt_name")) {
+        issues.push({ code: "INVALID_CHECKPOINT", node_id: nodeId, field: "ckpt_name", message: "Checkpoint loader requires a checkpoint name", severity: "error" });
+        risk += 25;
+      }
+    }
+    if (["UNETLoader", "CLIPLoader", "VAELoader"].includes(classType)) {
+      const parameter = classType === "UNETLoader" ? "unet_name" : classType === "CLIPLoader" ? "clip_name" : "vae_name";
+      if (!hasValue(node.inputs, parameter)) {
+        issues.push({ code: "INVALID_MODEL_PARAMETER", node_id: nodeId, field: parameter, message: `${classType} requires ${parameter}`, severity: "error" });
+        risk += 20;
+      }
+    }
+    if (["KSampler", "KSamplerAdvanced"].includes(classType)) {
+      for (const field of ["model", "positive", "negative", "latent_image"]) {
+        if (!hasValue(node.inputs, field)) {
+          issues.push({ code: "UNLINKED_INPUT", node_id: nodeId, field, message: `Sampler input '${field}' is unlinked`, severity: "error" });
+          unresolved_links.push({ node_id: nodeId, field, issue: "Required sampler input is unlinked" });
+          risk += 10;
+        }
+      }
+      validatePositiveParameter(node.inputs, "steps", nodeId, issues);
+      validatePositiveParameter(node.inputs, "cfg", nodeId, issues);
+      if (issues.some((issue) => issue.node_id === nodeId && issue.code === "INVALID_MODEL_PARAMETER")) risk += 10;
+    }
+    if (classType === "EmptyLatentImage") {
+      for (const field of ["width", "height", "batch_size"]) validatePositiveParameter(node.inputs, field, nodeId, issues);
+      if (issues.some((issue) => issue.node_id === nodeId && issue.code === "INVALID_MODEL_PARAMETER")) risk += 10;
+    }
+  }
+  const uniqueIssues = issues.filter((issue, index2, all) => index2 === all.findIndex((candidate) => JSON.stringify(candidate) === JSON.stringify(issue)));
+  return {
+    valid: uniqueIssues.length === 0,
+    risk_score: Math.min(100, risk),
+    unresolved_links,
+    missing_nodes: [...missing_nodes].sort(),
+    issues: uniqueIssues
+  };
+}
+__name(auditComfyWorkflow, "auditComfyWorkflow");
+async function readJson(c) {
+  try {
+    return await c.req.json();
+  } catch {
+    return void 0;
+  }
+}
+__name(readJson, "readJson");
+function exceedsJsonDepth(rawText, maxDepth = MAX_JSON_DEPTH) {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (const character of rawText) {
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (character === "\\") escaped = true;
+      else if (character === '"') inString = false;
+      continue;
+    }
+    if (character === '"') inString = true;
+    else if (character === "{" || character === "[") {
+      depth += 1;
+      if (depth > maxDepth) return true;
+    } else if (character === "}" || character === "]") depth = Math.max(0, depth - 1);
+  }
+  return false;
+}
+__name(exceedsJsonDepth, "exceedsJsonDepth");
 function getObjectDepth(obj) {
   if (obj === null || typeof obj !== "object") return 0;
   let depth = 0;
@@ -40071,12 +41036,14 @@ function flattenObject(obj, prefix = "", sep = ".") {
 }
 __name(flattenObject, "flattenObject");
 app.get("/", (c) => {
+  const config2 = resolveNetworkConfig(c.env);
   return c.json({
     name: "Ligeia Studio M2M Micro-Commerce Hub",
-    network: PROD_NETWORK,
-    settlement_token: "USDC (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)",
-    pay_to: PROD_PAY_TO,
-    version: "1.0.0",
+    network: config2.network,
+    chain_id: config2.chain_id,
+    settlement_token: `USDC (${config2.usdc})`,
+    pay_to: config2.pay_to,
+    version: VERSION,
     cells: {
       "Cell 001": { route: "/v1/media-geometry", price: "$0.001", description: "2D Aspect Ratio & Exact Crop Offsets" },
       "Cell 002": { route: "/v1/geometry/measurement", price: "$0.001", description: 'Pythagorean Squaring & 1/16" Fractions' },
@@ -40086,94 +41053,110 @@ app.get("/", (c) => {
   });
 });
 app.get("/.well-known/x402.json", (c) => {
+  const config2 = resolveNetworkConfig(c.env);
   return c.json({
-    x402Version: 1,
-    name: "Ligeia Studio M2M Micro-Commerce Hub",
-    network: PROD_NETWORK,
-    payTo: PROD_PAY_TO,
-    endpoints: [
-      { route: "/v1/media-geometry", price: "$0.001", asset: "USDC", scheme: "exact" },
-      { route: "/v1/geometry/measurement", price: "$0.001", asset: "USDC", scheme: "exact" },
-      { route: "/v1/data/json-clean", price: "$0.001", asset: "USDC", scheme: "exact" },
-      { route: "/v1/workflow/comfy-preflight", price: "$0.001", asset: "USDC", scheme: "exact" }
+    version: VERSION,
+    network: config2.network,
+    chain_id: config2.chain_id,
+    pay_to: config2.pay_to,
+    asset: config2.usdc,
+    services: [
+      { cell: "001", name: "Media Geometry", route: "/v1/media-geometry", price_atomic: 1e3, price_usdc: 1e-3 },
+      { cell: "002", name: "Geometric Measurement", route: "/v1/geometry/measurement", price_atomic: 1e3, price_usdc: 1e-3 },
+      { cell: "003", name: "JSON Hygiene", route: "/v1/data/json-clean", price_atomic: 1e3, price_usdc: 1e-3 },
+      { cell: "004", name: "ComfyUI Preflight Risk", route: "/v1/workflow/comfy-preflight", price_atomic: 1e3, price_usdc: 1e-3 }
     ]
   });
 });
+app.use("*", async (c, next) => {
+  const contentLength = Number(c.req.header("content-length") ?? 0);
+  if (contentLength > MAX_BODY_BYTES) {
+    return failure(c, 413, "PAYLOAD_TOO_LARGE", "Request body exceeds the 512 KB maximum", "Request body <= 524288 bytes");
+  }
+  if (c.req.method !== "GET" && c.req.method !== "HEAD") {
+    const bodyBytes = await c.req.raw.clone().arrayBuffer();
+    if (bodyBytes.byteLength > MAX_BODY_BYTES) {
+      return failure(c, 413, "PAYLOAD_TOO_LARGE", "Request body exceeds the 512 KB maximum", "Request body <= 524288 bytes");
+    }
+  }
+  return next();
+});
 app.use(
   "*",
-  (c, next) => paymentMiddleware(
-    PROD_PAY_TO,
-    {
-      "/v1/media-geometry": {
-        price: "$0.001",
-        network: PROD_NETWORK,
-        config: { description: "Cell 001 Media Geometry", mimeType: "application/json" }
+  async (c, next) => {
+    const config2 = resolveNetworkConfig(c.env);
+    return paymentMiddleware(
+      config2.pay_to,
+      {
+        "/v1/media-geometry": {
+          price: "$0.001",
+          network: "base",
+          config: { description: "Cell 001 Media Geometry", mimeType: "application/json" }
+        },
+        "/v1/geometry/measurement": {
+          price: "$0.001",
+          network: "base",
+          config: { description: "Cell 002 Geometric Measurement", mimeType: "application/json" }
+        },
+        "/v1/data/json-clean": {
+          price: "$0.001",
+          network: "base",
+          config: { description: "Cell 003 Data Hygiene", mimeType: "application/json" }
+        },
+        "/v1/workflow/comfy-preflight": {
+          price: "$0.001",
+          network: "base",
+          config: { description: "Cell 004 ComfyUI Preflight", mimeType: "application/json" }
+        }
       },
-      "/v1/geometry/measurement": {
-        price: "$0.001",
-        network: PROD_NETWORK,
-        config: { description: "Cell 002 Geometric Measurement", mimeType: "application/json" }
-      },
-      "/v1/data/json-clean": {
-        price: "$0.001",
-        network: PROD_NETWORK,
-        config: { description: "Cell 003 Data Hygiene", mimeType: "application/json" }
-      },
-      "/v1/workflow/comfy-preflight": {
-        price: "$0.001",
-        network: PROD_NETWORK,
-        config: { description: "Cell 004 ComfyUI Preflight", mimeType: "application/json" }
+      {
+        url: "https://api.cdp.coinbase.com/v2/x402",
+        createAuthHeaders: /* @__PURE__ */ __name(() => createCdpAuthHeaders(c.env), "createAuthHeaders")
       }
-    },
-    { url: "https://x402.org/facilitator" }
-  )(c, next)
+    )(c, next);
+  }
 );
 app.post("/v1/media-geometry", async (c) => {
-  const body = await c.req.json();
+  const body = await readJson(c);
+  if (!isCell001Request(body)) return failure(c, 422, "INVALID_SCHEMA", "Dimensions must be positive integers and mode must be crop or contain", "{ source: { width: integer, height: integer }, target: { width: integer, height: integer }, mode?: crop|contain }");
   const sw = body?.source?.width;
   const sh = body?.source?.height;
   const tw = body?.target?.width;
   const th = body?.target?.height;
   if (![sw, sh, tw, th].every(Number.isInteger) || [sw, sh, tw, th].some((n) => n <= 0)) {
-    return c.json({ error: "Dimensions must be positive integers > 0" }, 400);
+    return failure(c, 422, "INVALID_DIMENSIONS", "Dimensions must be positive integers > 0", "Cell001Request");
   }
   const mode = body.mode ?? "crop";
   const scale = mode === "crop" ? Math.max(tw / sw, th / sh) : Math.min(tw / sw, th / sh);
   const scaledW = Math.round(sw * scale);
   const scaledH = Math.round(sh * scale);
-  return c.json({
-    ok: true,
-    answer: {
-      cell: "media_geometry",
-      scale: Number(scale.toFixed(6)),
-      scaled_dimensions: { width: scaledW, height: scaledH },
-      crop: { x: Math.max(0, Math.floor((scaledW - tw) / 2)), y: Math.max(0, Math.floor((scaledH - th) / 2)), width: tw, height: th },
-      deterministic: true
-    }
-  });
+  return c.json(success("media_geometry", {
+    scale: Number(scale.toFixed(6)),
+    scaled_dimensions: { width: scaledW, height: scaledH },
+    crop: { x: Math.max(0, Math.floor((scaledW - tw) / 2)), y: Math.max(0, Math.floor((scaledH - th) / 2)), width: tw, height: th }
+  }));
 });
 app.post("/v1/geometry/measurement", async (c) => {
-  const body = await c.req.json();
-  if (body.operation === "diagonal") {
-    if (!body.dimensions || body.dimensions.width <= 0 || body.dimensions.length <= 0) {
-      return c.json({ error: "Width and length must be positive numbers > 0" }, 400);
-    }
+  const body = await readJson(c);
+  if (isCell002Request(body)) {
     const diag = Math.hypot(body.dimensions.width, body.dimensions.length);
-    return c.json({ ok: true, answer: { cell: "geometric_measurement", diagonal: Number(diag.toFixed(6)), deterministic: true } });
+    return c.json(success("geometric_measurement", { diagonal: Number(diag.toFixed(6)) }));
   }
-  return c.json({ error: "Invalid operation" }, 400);
+  return failure(c, 422, "INVALID_SCHEMA", "Operation must be diagonal with positive width and length", "{ operation: diagonal, dimensions: { width: number, length: number, unit?: string } }");
 });
 app.post("/v1/data/json-clean", async (c) => {
   const rawText = await c.req.text();
   if (rawText.length > 256 * 1024) {
-    return c.json({ error: "Payload exceeds maximum allowed limit of 256 KB" }, 413);
+    return failure(c, 422, "PAYLOAD_TOO_LARGE", "Payload exceeds maximum allowed limit of 256 KB", "Cell003Request");
   }
   let body;
   try {
+    if (exceedsJsonDepth(rawText)) return failure(c, 422, "MAX_DEPTH_EXCEEDED", "JSON nesting depth exceeds the maximum allowed limit", "JSON nesting depth <= 32");
     body = JSON.parse(rawText);
   } catch (e7) {
-    return c.json({ error: `JSON parse error: ${e7.message}` }, 400);
+    return failure(c, 400, "INVALID_JSON", `JSON parse error: ${e7.message}`, "Valid JSON object containing raw_payload or json_object");
   }
+  if (!isCell003Request(body)) return failure(c, 422, "INVALID_SCHEMA", "Must provide raw_payload or json_object", "{ raw_payload?: string, json_object?: JSON, strip_null_values?: boolean, flatten_keys?: boolean }");
   let targetObj;
   if (body.raw_payload) {
     let cleanStr = body.raw_payload.trim();
@@ -40182,59 +41165,32 @@ app.post("/v1/data/json-clean", async (c) => {
     try {
       targetObj = JSON.parse(cleanStr);
     } catch (e7) {
-      return c.json({ error: `Embedded JSON syntax error: ${e7.message}` }, 400);
+      return failure(c, 422, "INVALID_EMBEDDED_JSON", `Embedded JSON syntax error: ${e7.message}`, "raw_payload must contain valid JSON");
     }
   } else if (body.json_object) {
     targetObj = body.json_object;
   } else {
-    return c.json({ error: "Must provide either raw_payload or json_object" }, 400);
+    return failure(c, 422, "INVALID_SCHEMA", "Must provide either raw_payload or json_object", "Cell003Request");
   }
   if (getObjectDepth(targetObj) > 10) {
-    return c.json({ error: "JSON nesting depth exceeds maximum allowed limit of 10 levels" }, 400);
+    return failure(c, 422, "MAX_DEPTH_EXCEEDED", "JSON nesting depth exceeds maximum allowed limit of 10 levels", "JSON nesting depth <= 10");
   }
   if (body.strip_null_values) targetObj = stripNulls(targetObj);
   if (body.flatten_keys && typeof targetObj === "object" && !Array.isArray(targetObj)) {
     targetObj = flattenObject(targetObj);
   }
-  return c.json({
-    ok: true,
-    answer: { cell: "data_hygiene", clean_json: targetObj, byte_size: JSON.stringify(targetObj).length, deterministic: true }
-  });
+  return c.json(success("data_hygiene", { clean_json: targetObj, byte_size: JSON.stringify(targetObj).length }));
 });
 app.post("/v1/workflow/comfy-preflight", async (c) => {
-  const body = await c.req.json();
-  if (!body.prompt || typeof body.prompt !== "object") {
-    return c.json({ error: "Missing or invalid prompt graph object" }, 400);
-  }
+  const rawBody = await c.req.raw.clone().text();
+  if (exceedsJsonDepth(rawBody)) return failure(c, 422, "MAX_DEPTH_EXCEEDED", "Workflow JSON nesting depth exceeds the maximum allowed limit", "JSON nesting depth <= 32");
+  const body = await readJson(c);
+  if (!isCell004Request(body)) return failure(c, 422, "INVALID_SCHEMA", "Missing or invalid prompt graph object", "{ prompt: { [node_id: string]: { class_type?: string, inputs?: object } } }");
   const nodes = Object.keys(body.prompt);
   if (nodes.length > 500) {
-    return c.json({ error: "Workflow graph exceeds maximum allowed limit of 500 nodes" }, 400);
+    return failure(c, 422, "MAX_NODES_EXCEEDED", "Workflow graph exceeds maximum allowed limit of 500 nodes", "prompt node count <= 500");
   }
-  const issues = [];
-  const nodeSet = new Set(nodes);
-  for (const [nodeId, node] of Object.entries(body.prompt)) {
-    if (node?.inputs) {
-      for (const [field, val] of Object.entries(node.inputs)) {
-        if (Array.isArray(val) && val.length === 2) {
-          const targetId = String(val[0]);
-          if (!nodeSet.has(targetId)) {
-            issues.push({ node_id: nodeId, class_type: node.class_type, field, issue: `Dangling link to nonexistent node ID '${targetId}'` });
-          }
-        }
-      }
-    }
-  }
-  return c.json({
-    ok: true,
-    answer: {
-      cell: "comfy_preflight",
-      valid: issues.length === 0,
-      node_count: nodes.length,
-      error_count: issues.length,
-      issues,
-      deterministic: true
-    }
-  });
+  return c.json(success("comfy_preflight", auditComfyWorkflow(body)));
 });
 var index_default2 = app;
 export {

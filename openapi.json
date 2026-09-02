@@ -34,7 +34,35 @@
       "post": {
         "summary": "Cell 004: ComfyUI Workflow Preflight Engine",
         "description": "Statically audits ComfyUI node graphs for dangling links and missing required inputs before expensive cloud GPU execution.",
-        "responses": { "200": { "description": "Structured graph diagnostic report" }, "402": { "description": "x402 Payment Required ($0.001 USDC)" } }
+        "responses": { "200": { "description": "Structured graph diagnostic report" }, "402": { "description": "x402 Payment Required ($0.020 USDC)" } }
+      }
+    },
+    "/v1/media/latent-snap": {
+      "post": {
+        "summary": "Cell 005: Latent Grid Snap Engine",
+        "description": "Snaps image dimensions to exact 8x8 & 64x64 latent buckets for FLUX, SDXL, and Wan2.1.",
+        "responses": { "200": { "description": "Latent grid alignment and bucket mapping" }, "402": { "description": "x402 Payment Required ($0.005 USDC)" } }
+      }
+    },
+    "/v1/data/json-repair": {
+      "post": {
+        "summary": "Cell 006: JSON Auto-Repair Engine",
+        "description": "Deterministically fixes unclosed syntax, quotes, and code fences.",
+        "responses": { "200": { "description": "Deterministic repaired and parsed JSON" }, "402": { "description": "x402 Payment Required ($0.010 USDC)" } }
+      }
+    },
+    "/v1/media/color-math": {
+      "post": {
+        "summary": "Cell 007: Color Math & Luminance Engine",
+        "description": "Deterministic RGB/Hex/HSL conversions, relative luminance, and WCAG contrast ratios.",
+        "responses": { "200": { "description": "Exact color space conversions and WCAG compliance" }, "402": { "description": "x402 Payment Required ($0.005 USDC)" } }
+      }
+    },
+    "/v1/ai/prompt-weight": {
+      "post": {
+        "summary": "Cell 008: Prompt Token & Weight Normalizer",
+        "description": "Normalizes attention syntax across AI prompt formats (A1111, ComfyUI, Midjourney, NovelAI).",
+        "responses": { "200": { "description": "Normalized prompt tokens, weights, and CLIP chunk breakdown" }, "402": { "description": "x402 Payment Required ($0.005 USDC)" } }
       }
     }
   }

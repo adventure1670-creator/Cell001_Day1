@@ -63,7 +63,7 @@ async def handle_list_tools() -> List[types.Tool]:
           name="cell_004_comfyui_preflight",
           description=(
               "Cell 004: Performs static link integrity audits on ComfyUI node"
-              " graphs to identify broken connections or orphaned nodes. Cost: 20000 atomic USDC units on Base Sepolia."
+              " graphs to identify broken connections or orphaned nodes. Cost: 20000 atomic USDC units on Base Mainnet."
           ),
           inputSchema={
               "type": "object",
@@ -73,6 +73,65 @@ async def handle_list_tools() -> List[types.Tool]:
                       "description": "Serialized ComfyUI workflow JSON object",
                   },
                   "installed_nodes": {"type": "array", "items": {"type": "string"}},
+              },
+              "required": ["prompt"],
+          },
+      ),
+      types.Tool(
+          name="cell_005_latent_grid_snap",
+          description=(
+              "Cell 005: Snaps image dimensions to exact 8x8 & 64x64 latent buckets for FLUX, SDXL, and Wan2.1. Cost: 5000 atomic USDC units on Base Mainnet."
+          ),
+          inputSchema={
+              "type": "object",
+              "properties": {
+                  "width": {"type": "integer", "description": "Image width in pixels"},
+                  "height": {"type": "integer", "description": "Image height in pixels"},
+                  "target_model": {"type": "string", "enum": ["flux", "sdxl", "wan2.1", "generic"]},
+                  "bucket_step": {"type": "integer", "enum": [8, 16, 32, 64, 128]},
+                  "preserve_aspect": {"type": "boolean"},
+              },
+              "required": ["width", "height"],
+          },
+      ),
+      types.Tool(
+          name="cell_006_json_auto_repair",
+          description=(
+              "Cell 006: Deterministically fixes unclosed syntax, quotes, and code fences. Cost: 10000 atomic USDC units on Base Mainnet."
+          ),
+          inputSchema={
+              "type": "object",
+              "properties": {
+                  "raw_payload": {"type": "string", "description": "Malformed or truncated JSON text string"},
+              },
+              "required": ["raw_payload"],
+          },
+      ),
+      types.Tool(
+          name="cell_007_color_math",
+          description=(
+              "Cell 007: Deterministic RGB/Hex/HSL conversions, relative luminance & WCAG contrast ratios. Cost: 5000 atomic USDC units on Base Mainnet."
+          ),
+          inputSchema={
+              "type": "object",
+              "properties": {
+                  "color": {"type": "string", "description": "Primary color in hex, rgb(), or hsl() format"},
+                  "compare_color": {"type": "string", "description": "Comparison color for WCAG contrast ratio"},
+              },
+              "required": ["color"],
+          },
+      ),
+      types.Tool(
+          name="cell_008_prompt_weight",
+          description=(
+              "Cell 008: Normalizes attention syntax across AI prompt formats (A1111, ComfyUI, Midjourney, NovelAI). Cost: 5000 atomic USDC units on Base Mainnet."
+          ),
+          inputSchema={
+              "type": "object",
+              "properties": {
+                  "prompt": {"type": "string", "description": "AI prompt with attention/weight syntax"},
+                  "target_format": {"type": "string", "enum": ["comfy", "a1111", "midjourney", "clean", "flat"]},
+                  "deduplicate": {"type": "boolean"},
               },
               "required": ["prompt"],
           },
@@ -88,6 +147,10 @@ async def handle_call_tool(
       "cell_002_geometric_measurement": "/v1/geometry/measurement",
       "cell_003_json_hygiene": "/v1/data/json-clean",
       "cell_004_comfyui_preflight": "/v1/workflow/comfy-preflight",
+      "cell_005_latent_grid_snap": "/v1/media/latent-snap",
+      "cell_006_json_auto_repair": "/v1/data/json-repair",
+      "cell_007_color_math": "/v1/media/color-math",
+      "cell_008_prompt_weight": "/v1/ai/prompt-weight",
   }
   if name not in endpoint_map:
     return [
