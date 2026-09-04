@@ -1,0 +1,8 @@
+startCommand:
+  type: stdio
+  config:
+    command: "python"
+    args: ["ligeia_mcp_server.py"]
+
+name: "ligeia-mcp-server"
+description: "Ligeia Studio autonomous micro-commerce computational engines monetized via x402 on Base Mainnet."
