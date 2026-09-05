@@ -1744,6 +1744,267 @@ app.post("/v1/ai/prompt-weight", async (c) => {
 });
 
 
+
+// ============================================================================
+// CELL 012: COMFYUI WORKFLOW OPTIMIZER ENGINE (Deterministic Graph Compiler)
+// ============================================================================
+function optimizeComfyWorkflow(workflow: any, customOutputNodes: string[] = [], preserveNodes: string[] = []) {
+  if (!workflow || typeof workflow !== 'object') {
+    return { ok: false, error: { code: 'INVALID_PAYLOAD', message: 'Workflow must be a non-null object' } };
+  }
+
+  const STANDARD_OUTPUT_NODES = new Set([
+    'SaveImage', 'PreviewImage', 'SaveAnimatedWEBP', 'SaveAnimatedPNG', 
+    'VHS_VideoCombine', 'SaveAudio', 'PreviewAudio'
+  ]);
+  const LOADER_NODE_TYPES = new Set([
+    'CheckpointLoaderSimple', 'CheckpointLoader', 'unCLIPCheckpointLoader',
+    'VAELoader', 'CLIPLoader', 'DualCLIPLoader', 'UNETLoader'
+  ]);
+
+  const customSinks = new Set((customOutputNodes || []).map(String));
+  const preserve = new Set((preserveNodes || []).map(String));
+
+  const graph: Record<string, { class_type: string; inputs: Record<string, any>; raw: any }> = {};
+  for (const [nid, node] of Object.entries(workflow)) {
+    if (node && typeof node === 'object') {
+      const n = node as any;
+      graph[String(nid)] = {
+        class_type: String(n.class_type || ''),
+        inputs: (n.inputs && typeof n.inputs === 'object') ? n.inputs : {},
+        raw: n
+      };
+    }
+  }
+
+  const forwardAdj: Record<string, string[]> = {};
+  const reverseAdj: Record<string, string[]> = {};
+  const inDegree: Record<string, number> = {};
+  const outDegree: Record<string, number> = {};
+
+  for (const nid of Object.keys(graph)) {
+    forwardAdj[nid] = [];
+    reverseAdj[nid] = [];
+    inDegree[nid] = 0;
+    outDegree[nid] = 0;
+  }
+
+  for (const [nid, node] of Object.entries(graph)) {
+    for (const [inKey, val] of Object.entries(node.inputs)) {
+      if (Array.isArray(val) && val.length >= 1) {
+        const srcId = String(val[0]);
+        if (srcId in graph) {
+          forwardAdj[srcId].push(nid);
+          reverseAdj[nid].push(srcId);
+          outDegree[srcId] = (outDegree[srcId] || 0) + 1;
+          inDegree[nid] = (inDegree[nid] || 0) + 1;
+        }
+      }
+    }
+  }
+
+  const terminalNodes = new Set<string>();
+  for (const [nid, node] of Object.entries(graph)) {
+    const ctype = node.class_type;
+    const isSink = STANDARD_OUTPUT_NODES.has(ctype) ||
+      customSinks.has(nid) ||
+      node.raw._is_output_node === true ||
+      node.raw.is_output_node === true;
+    if (isSink) {
+      terminalNodes.add(nid);
+    }
+  }
+
+  if (terminalNodes.size === 0) {
+    for (const [nid, deg] of Object.entries(outDegree)) {
+      if (deg === 0) terminalNodes.add(nid);
+    }
+  }
+
+  const reachable = new Set<string>(terminalNodes);
+  const queue = Array.from(terminalNodes);
+
+  while (queue.length > 0) {
+    const curr = queue.shift()!;
+    const parents = reverseAdj[curr] || [];
+    for (const parent of parents) {
+      if (!reachable.has(parent)) {
+        reachable.add(parent);
+        queue.push(parent);
+      }
+    }
+  }
+
+  for (const p of preserve) {
+    if (p in graph) reachable.add(p);
+  }
+
+  const deadNodes = Object.keys(graph)
+    .filter(nid => !reachable.has(nid))
+    .sort((a, b) => {
+      const numA = parseInt(a, 10);
+      const numB = parseInt(b, 10);
+      return (!isNaN(numA) && !isNaN(numB)) ? numA - numB : a.localeCompare(b);
+    });
+
+  const duplicateLoaders: any[] = [];
+  const seenLoaders = new Map<string, string>();
+
+  for (const [nid, node] of Object.entries(graph)) {
+    if (deadNodes.includes(nid)) continue;
+    const ctype = node.class_type;
+    if (LOADER_NODE_TYPES.has(ctype)) {
+      const loaderParams: Record<string, any> = {};
+      for (const [k, v] of Object.entries(node.inputs)) {
+        if (!(Array.isArray(v) && v.length >= 1 && String(v[0]) in graph)) {
+          loaderParams[k] = v;
+        }
+      }
+      const sortedKeys = Object.keys(loaderParams).sort();
+      const canonKey = `${ctype}::` + JSON.stringify(sortedKeys.map(k => [k, loaderParams[k]]));
+
+      if (seenLoaders.has(canonKey)) {
+        const origId = seenLoaders.get(canonKey)!;
+        duplicateLoaders.push({
+          original_node_id: origId,
+          duplicate_node_id: nid,
+          class_type: ctype,
+          shared_params: loaderParams
+        });
+      } else {
+        seenLoaders.set(canonKey, nid);
+      }
+    }
+  }
+
+  const redundantVaeDecodes: any[] = [];
+  const seenVaeDecodes = new Map<string, string>();
+
+  for (const [nid, node] of Object.entries(graph)) {
+    if (deadNodes.includes(nid)) continue;
+    const ctype = node.class_type;
+    if (ctype === 'VAEDecode' || ctype === 'VAEDecodeTiled') {
+      const latentIn = node.inputs.samples !== undefined ? JSON.stringify(node.inputs.samples) : '';
+      const vaeIn = node.inputs.vae !== undefined ? JSON.stringify(node.inputs.vae) : '';
+      const decodeKey = `${latentIn}::${vaeIn}`;
+
+      if (latentIn !== '' && seenVaeDecodes.has(decodeKey)) {
+        const origId = seenVaeDecodes.get(decodeKey)!;
+        redundantVaeDecodes.push({
+          original_node_id: origId,
+          duplicate_node_id: nid,
+          class_type: ctype,
+          reason: `Decodes identical latent input ${latentIn} with VAE ${vaeIn}`
+        });
+      } else if (latentIn !== '') {
+        seenVaeDecodes.set(decodeKey, nid);
+      }
+    }
+  }
+
+  const unconnectedOutputs: any[] = [];
+  for (const [nid, node] of Object.entries(graph)) {
+    if (deadNodes.includes(nid)) continue;
+    if (!terminalNodes.has(nid) && (outDegree[nid] || 0) === 0) {
+      unconnectedOutputs.push({
+        node_id: nid,
+        class_type: node.class_type,
+        reason: 'Node has no downstream connections and is not a terminal save/preview node'
+      });
+    }
+  }
+
+  const nodesToRemove = new Set([...deadNodes, ...duplicateLoaders.map(d => d.duplicate_node_id)]);
+  const loaderReplace: Record<string, string> = {};
+  for (const d of duplicateLoaders) {
+    loaderReplace[d.duplicate_node_id] = d.original_node_id;
+  }
+
+  const optimizedRaw: Record<string, any> = {};
+  for (const [nid, node] of Object.entries(graph)) {
+    if (nodesToRemove.has(nid)) continue;
+    const cleanedNode = JSON.parse(JSON.stringify(node.raw));
+    if (cleanedNode.inputs && typeof cleanedNode.inputs === 'object') {
+      const newInputs: Record<string, any> = {};
+      for (const [inK, inV] of Object.entries(cleanedNode.inputs)) {
+        if (Array.isArray(inV) && inV.length >= 2 && String(inV[0]) in loaderReplace) {
+          newInputs[inK] = [loaderReplace[String(inV[0])], inV[1]];
+        } else {
+          newInputs[inK] = inV;
+        }
+      }
+      cleanedNode.inputs = newInputs;
+    }
+    optimizedRaw[nid] = cleanedNode;
+  }
+
+  const optimizationsApplied: string[] = [];
+  if (deadNodes.length > 0) {
+    optimizationsApplied.push(`Pruned ${deadNodes.length} dead/unreachable nodes: [${deadNodes.join(', ')}]`);
+  }
+  if (duplicateLoaders.length > 0) {
+    optimizationsApplied.push(`Consolidated ${duplicateLoaders.length} duplicate model/VAE loader nodes`);
+  }
+  if (redundantVaeDecodes.length > 0) {
+    optimizationsApplied.push(`Flagged ${redundantVaeDecodes.length} redundant VAE decodes`);
+  }
+  if (unconnectedOutputs.length > 0) {
+    optimizationsApplied.push(`Flagged ${unconnectedOutputs.length} unconnected intermediate outputs`);
+  }
+
+  const vramSavedEst = Math.round((duplicateLoaders.length * 4096.0 + deadNodes.length * 512.0) * 100) / 100;
+
+  return {
+    ok: true,
+    cell: 'workflow_optimizer',
+    answer: {
+      valid: true,
+      original_node_count: Object.keys(graph).length,
+      optimized_node_count: Object.keys(optimizedRaw).length,
+      dead_nodes: deadNodes,
+      duplicate_loaders: duplicateLoaders,
+      redundant_vae_decodes: redundantVaeDecodes,
+      unconnected_outputs: unconnectedOutputs,
+      adjacency_map: forwardAdj,
+      optimizations_applied: optimizationsApplied,
+      optimized_workflow: optimizedRaw,
+      savings: {
+        dead_nodes_count: deadNodes.length,
+        duplicate_loaders_count: duplicateLoaders.length,
+        redundant_decodes_count: redundantVaeDecodes.length,
+        vram_saved_mb_est: vramSavedEst
+      }
+    },
+    meta: {
+      deterministic: true,
+      version: '1.0.0'
+    }
+  };
+}
+
+app.post('/v1/workflow/optimize', async (c) => {
+  try {
+    const body = await c.req.json();
+    const workflow = body.workflow || body;
+    const customOutputs = Array.isArray(body.custom_output_nodes) ? body.custom_output_nodes : [];
+    const preserveNodes = Array.isArray(body.preserve_nodes) ? body.preserve_nodes : [];
+    const result = optimizeComfyWorkflow(workflow, customOutputs, preserveNodes);
+    if (!result.ok) {
+      return c.json(result, 400);
+    }
+    return c.json(result);
+  } catch (err: any) {
+    return c.json({
+      ok: false,
+      error: {
+        code: 'INVALID_JSON',
+        message: err?.message || 'Failed to parse JSON body'
+      }
+    }, 400);
+  }
+});
+
+
 app.get("/.well-known/mcp/server-card.json", (c) => {
   c.header("Access-Control-Allow-Origin", "*");
   return c.json({
@@ -1752,7 +2013,8 @@ app.get("/.well-known/mcp/server-card.json", (c) => {
       { name: "cell_001_media_geometry", description: "Deterministic media aspect ratio and coordinate geometry engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
       { name: "cell_002_geometric_measurement", description: "High-precision diagonal and structural clearance validator. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
       { name: "cell_003_json_hygiene", description: "Strict JSON payload structural sanitation engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { raw_json: { type: "string" } }, required: ["raw_json"] } },
-      { name: "cell_004_comfyui_preflight", description: "ComfyUI node-graph syntax audit and risk scoring engine. Gated at $0.020 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object" } }, required: ["workflow"] } }
+      { name: "cell_004_comfyui_preflight", description: "ComfyUI node-graph syntax audit and risk scoring engine. Gated at $0.020 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object" },
+      { name: "cell_012_workflow_optimizer", description: "Deterministic ComfyUI graph optimizer. Prunes dead nodes, consolidates duplicate model/VAE loaders, remaps inputs, and flags redundant decodes. Gated at $0.035 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object", description: "Raw ComfyUI prompt/workflow node graph" } }, required: ["workflow"] } } }, required: ["workflow"] } }
     ]
   });
 });
@@ -1765,7 +2027,8 @@ app.get("/.well-known/mcp.json", (c) => {
       { name: "cell_001_media_geometry", description: "Deterministic media aspect ratio and coordinate geometry engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
       { name: "cell_002_geometric_measurement", description: "High-precision diagonal and structural clearance validator. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
       { name: "cell_003_json_hygiene", description: "Strict JSON payload structural sanitation engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { raw_json: { type: "string" } }, required: ["raw_json"] } },
-      { name: "cell_004_comfyui_preflight", description: "ComfyUI node-graph syntax audit and risk scoring engine. Gated at $0.020 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object" } }, required: ["workflow"] } }
+      { name: "cell_004_comfyui_preflight", description: "ComfyUI node-graph syntax audit and risk scoring engine. Gated at $0.020 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object" },
+      { name: "cell_012_workflow_optimizer", description: "Deterministic ComfyUI graph optimizer. Prunes dead nodes, consolidates duplicate model/VAE loaders, remaps inputs, and flags redundant decodes. Gated at $0.035 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object", description: "Raw ComfyUI prompt/workflow node graph" } }, required: ["workflow"] } } }, required: ["workflow"] } }
     ]
   });
 });
