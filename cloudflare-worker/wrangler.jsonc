@@ -3,6 +3,17 @@
   "name": "cell001-media-geometry",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  },
   "vars": {
     "NETWORK": "base",
     "CHAIN_ID": "8453",
