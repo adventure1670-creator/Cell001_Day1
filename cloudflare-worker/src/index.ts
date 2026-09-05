@@ -1743,4 +1743,31 @@ app.post("/v1/ai/prompt-weight", async (c) => {
   });
 });
 
+
+app.get("/.well-known/mcp/server-card.json", (c) => {
+  c.header("Access-Control-Allow-Origin", "*");
+  return c.json({
+    serverInfo: { name: "cell001-day1", version: "1.0.0" },
+    tools: [
+      { name: "cell_001_media_geometry", description: "Deterministic media aspect ratio and coordinate geometry engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
+      { name: "cell_002_geometric_measurement", description: "High-precision diagonal and structural clearance validator. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
+      { name: "cell_003_json_hygiene", description: "Strict JSON payload structural sanitation engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { raw_json: { type: "string" } }, required: ["raw_json"] } },
+      { name: "cell_004_comfyui_preflight", description: "ComfyUI node-graph syntax audit and risk scoring engine. Gated at $0.020 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object" } }, required: ["workflow"] } }
+    ]
+  });
+});
+
+app.get("/.well-known/mcp.json", (c) => {
+  c.header("Access-Control-Allow-Origin", "*");
+  return c.json({
+    serverInfo: { name: "cell001-day1", version: "1.0.0" },
+    tools: [
+      { name: "cell_001_media_geometry", description: "Deterministic media aspect ratio and coordinate geometry engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
+      { name: "cell_002_geometric_measurement", description: "High-precision diagonal and structural clearance validator. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { width: { type: "number" }, height: { type: "number" } }, required: ["width", "height"] } },
+      { name: "cell_003_json_hygiene", description: "Strict JSON payload structural sanitation engine. Gated at $0.003 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { raw_json: { type: "string" } }, required: ["raw_json"] } },
+      { name: "cell_004_comfyui_preflight", description: "ComfyUI node-graph syntax audit and risk scoring engine. Gated at $0.020 USDC on Base Mainnet.", inputSchema: { type: "object", properties: { workflow: { type: "object" } }, required: ["workflow"] } }
+    ]
+  });
+});
+
 export default app;
